@@ -1,0 +1,29 @@
+<html>
+<head>
+<script language="JavaScript"  type="text/javascript">
+function somador(x) {
+    return function (y) { return x + y; }
+}
+   
+function  teste() {
+    var soma10 = somador(10);
+    var soma5 = somador(5) ;
+    document.write("Soma 10 a 20: " + soma10(20) + "<br / > " ) ;
+    document.write("Soma 5 a 20: " + soma5(20) + "<br / > " ) ;
+}
+
+</script>
+</head>
+
+<body>
+<p>
+<button onclick="teste()">closure</button>
+</p>
+
+<p>
+<span id="result">Sem Resultado</span>
+</p>
+
+</body>
+
+</html>

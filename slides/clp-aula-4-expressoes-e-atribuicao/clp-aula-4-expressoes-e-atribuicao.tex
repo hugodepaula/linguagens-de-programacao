@@ -1,0 +1,376 @@
+\documentclass[handout]{beamer}
+
+\usetheme{Warsaw}
+
+\usepackage[brazil]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{times}
+\usepackage[T1]{fontenc}
+\usepackage{epsfig}
+\usepackage{listings}
+\usepackage{tikz}
+
+
+%\usepackage{dcolumn}
+%\newcolumntype{.}{D{.}{.}{-1}}
+%\newcolumntype{d}[1]{D{.}{.}{#1}}
+%\usetheme{Berkeley}
+
+\title[Conceitos de Linguagens de Programação]
+{%
+	Expressões e Atribuição%
+}
+\author[Prof. Hugo de Paula]
+{
+	Prof.~Hugo~de~Paula
+}
+\institute[DCC / PUC Minas]
+{\epsfig{file=puclogo_small_bw,width=1.5cm} \\
+	\textsc{Pontifícia Universidade Católica de Minas Gerais}\\
+	Departamento de Ciência da Computação
+}
+\date[]{}
+
+\lstset{language=Java,
+        basicstyle=\scriptsize,
+        commentstyle=\color{red},
+        showstringspaces=false,
+        numbers=left,
+        numberstyle=\tiny}
+
+
+\begin{document}
+
+\selectlanguage{brazil}
+
+
+
+\begin{frame}
+   \titlepage
+\end{frame}
+
+\addtobeamertemplate{frametitle}{}{%
+	\begin{tikzpicture}[remember picture,overlay]
+	\node[anchor=north east,yshift=3pt,xshift=3pt] at (current page.north east) {\epsfig{file=puclogo_small_bw,width=1cm}};
+	\end{tikzpicture}}
+
+
+\begin{frame}
+   \frametitle{Sumário}
+   \tableofcontents[pausesections]
+\end{frame}
+
+%\AtBeginSection[] % Do nothing for \section*
+%{
+%
+%\begin{frame}<beamer>
+%\frametitle{Outline}
+%\tableofcontents[currentsection]
+%\end{frame}}
+
+\section{Expressões}
+
+\subsection{Expressões}
+
+\begin{frame}{Expressões}
+
+\begin{itemize}
+\item Expressões são a forma mais fundamental de computação em uma linguagem de programação.
+
+\item Deve-se levar em consideração a forma de avaliação, a ordem de precedência dos operadores e a avaliação dos operandos.
+
+\end{itemize}
+\end{frame}
+
+
+
+\subsection{Expressões aritméticas}
+
+\begin{frame}{Expressões aritméticas}
+
+\textbf{Expressões aritméticas} consistem de operadores, operandos, parêntesis, e chamadas de funções.
+
+Aspectos de projeto de expressões aritméticas incluem:
+
+\begin{itemize}
+\item Regras de precedência de operadores.
+
+\item Associatividade de operadores.
+
+\item Ordem de avaliação dos operandos.
+
+\item Efeitos colaterais.
+
+\item Sobrecarga de operadores.
+
+\item Combinação de tipos em expressões.
+
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Precedência e Associatividade de operadores}
+
+\textbf{Precedência}: regras que definem a ordem em que operadores adjacentes são avaliados. Níveis típicos:
+
+\begin{itemize}
+\item parêntesis.
+
+\item operadores unários.
+
+\item ** (potência, se suportado).
+
+\item *, / e \%.
+
+\item + e -.
+
+\item combinação de tipos em expressões.
+\end{itemize}
+
+\textbf{Associatividade}: regras que definem a ordem em que operadores adjacentes com a mesma precedência são avaliados. Regra típica:
+
+\begin{itemize}
+\item Da esquerda para a direita (exceto **).
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{Ordem de avaliação de operandos}
+
+\begin{enumerate}
+\item Variáveis: inspeciona o valor da memória.
+
+\item Constantes: inspeciona na memória, ou em alguns casos é uma instrução da linguagem de máquina.
+
+\item Expressões em parêntesis.
+
+\item Chamada de função.
+
+\end{enumerate}
+\end{frame}
+
+
+\subsection{Efeito colateral}
+
+
+\begin{frame}[fragile]{Expressões com efeito colateral}
+   \begin{itemize}
+   \item Além de produzir um valor, sua avaliação também altera o ambiente (atualiza variáveis não locais, ou parâmetros bidirecionais, como em passagem por referência).
+   \item Exemplo: getchar(arq)
+      \begin{itemize}
+      \item Retorna o caractere corrente de um arquivo
+      \item Efeito colateral: avançar a posição corrente de leitura/escrita no arquivo
+      \item Com isso, provavelmente o trecho de programa abaixo está incorreto
+      \end{itemize}
+\begin{block}{}
+\scriptsize
+\centering
+\begin{lstlisting}[language=C,numbers=none]
+     if (getchar(arq) = = 'F')
+          sexo= feminino;
+     else if (getchar(arq) = = 'M')
+          sexo= masculino;
+\end{lstlisting}
+\end{block}	
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Transparência referencial}
+
+\begin{block}{Transparência referencial}
+Um programa tem a propriedade de transparência referencial, se quais duas expressões no programa que possuem o mesmo valor podem ser substituídas uma pela outra em qualquer lugar do programa, sem afetar o comportamento do mesmo.
+\end{block}
+
+\begin{lstlisting}
+   result1 = (fun(a) + b) / (fun(a) - c);
+   temp = fun(a);
+   result2 = (temp + b) / (temp - c);
+\end{lstlisting}
+
+Se \lstinline|fun| não produz efeito colateral, então \lstinline|result1 = result2|.
+
+Caso contrário, a transparência referencial é violada.
+
+\end{frame}
+
+\begin{frame}{Transparência referencial}
+\begin{itemize}
+\item Semântica de um programa é mais fácil de entender se o programa possui transparência referencial.
+
+\item Por não possuírem variáveis, programas de linguagens puramente funcionais possuem transparência referencial.
+
+\begin{itemize}
+\item funções não possuem estado.
+
+\item Se uma função utiliza um valor externo a ela, este valor deve ser constante.
+
+\item Desta forma, o valor da função depende apenas de seus parâmetros.
+\end{itemize}
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Conversão de tipos}
+
+\begin{itemize}
+\item Conversões de estreitamento (\textit{narrowing}), converte objeto para um tipo que não inclui todos os valores do tipo original. Exemplo: \lstinline|float| para \lstinline|int|.
+
+\item Conversões de alargamento (\textit{widening}), converte objeto para um tipo que inclui pelo menos aproximações de todos os valores do tipo original. Exemplo: \lstinline|int| para \lstinline|float|.
+
+\item \textbf{Coerção}: conversão implícita de tipos.
+
+\begin{itemize}
+\item Na maioria da LPs, tipos numéricos sofrem coerção através de conversões de alargamento.
+\end{itemize}
+
+\item \textbf{\textit{Type casting}}: conversão explícita de tipos. Exemplos:
+
+\begin{itemize}
+\item Em C: \lstinline|float numReal; int numInt = (int) numReal;|
+\end{itemize}
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Regras de coerção da linguagem C\#}
+
+\begin{center}
+\includegraphics[width=\textwidth]{coercaocsharp.pdf}
+\end{center}
+
+\end{frame}
+
+\begin{frame}[fragile]{Avaliação em curto circuito}
+\begin{itemize}
+    \item Uma expressão em que o resultado pode ser determinado sem que sejam avaliados todos os operandos e/ou operadores.
+    \item Exemplos:
+    \begin{itemize}
+        \item \lstinline|(13 * a) * (b / 13 - 1)| \\[1mm]
+        Se \lstinline|a| é $0$, então não é necessário avaliar \lstinline|(b  /13 - 1)|.
+        \item \lstinline$(ano % 4 == 0) && ((ano % 100 != 0) || (ano % 400 == 0))$ \\[1mm]
+        Se ano não é múltiplo de 4 (75\% das vezes), o ano não é bissexto, independente das outras condições.
+    \end{itemize}
+    \item Falta da avaliação em curto circuito pode causar erros:
+    \lstinline|while (index <= length) && (LIST[index] != value) index++;| \\[1mm]
+    Pode causar erro de índice fora da faixa se valor inicial de \lstinline|index| for maior que o tamanho da lista.
+    
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Avaliação em curto circuito}
+\begin{itemize}
+    \item C, C++ e Java usam avaliação em curto circuito para operadores booleanos, mas não oferecem curto circuito para operadores lógicos bit a bit.
+    \item Curto-circuito podem causar problemas em conjunto com efeito colateral: \\[1mm]
+    \lstinline$(a > b) || (b++ / 3)$ \\[1mm]
+    
+\end{itemize}
+\end{frame}
+
+\section{Comandos}
+
+\begin{frame}{Comandos}
+   \begin{itemize}
+   \item \textbf{Comando}: estrutura sintática cuja execução atualiza variáveis.
+   \item Característicos de linguagens imperativas.
+   \item Principais comandos de uma linguagem imperativa:
+      \begin{itemize}
+      \item Atribuição
+      \item Chamada de Procedimento
+      \item Sequenciais
+      \item Condicionais
+      \item Iterativos
+      \item Entrada e saída
+      \end{itemize}
+   \end{itemize}
+
+\end{frame}
+
+\subsection{Atribuição}
+
+\begin{frame}[fragile]{Atribuição}
+
+  \texttt{VARIAVEL}  $\leftarrow$   \texttt{EXPRESSAO} \\  acesso a variável  <operador de atribuição>  valor (expressão)
+
+  \begin{itemize}
+      \item se referências são valores de 1a. classe, variável é uma expressão do tipo referência.
+  \end{itemize}
+
+\begin{block}{Exemplo em ML}
+\scriptsize\centering
+\begin{lstlisting}[language=ML,numbers=none]
+       ( if  ...  then   m  else   n )  :=  7  
+\end{lstlisting}
+\end{block}	
+
+
+\begin{block}{Exemplo em Perl}
+\scriptsize
+\lstinline[language=Perl]|        ($flag ? $total : $subtotal) = 0| é equivalente a
+\begin{lstlisting}[language=Perl,numbers=none]
+        if ($flag) $total = 0
+        else $subtotal = 0
+\end{lstlisting}
+
+\end{block}	
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Atribuição}
+
+  \begin{itemize}
+     \item Atribuição múltipla.
+         \begin{itemize}
+         \item \lstinline[language=Pascal]!m  :=  n  :=  0;!
+         
+         \item \lstinline[language=Pascal]!m := n := <expr>! é equivalente à \lstinline[language=Pascal]!m := <expr>; n := <expr>;!?
+         \end{itemize}
+         
+      \item Atribuição simultânea.
+      
+         \begin{itemize}
+         \item \lstinline[language=Pascal]!m, n  :=  n, m!
+         \end{itemize}
+
+\begin{block}{Exemplo em Perl}
+\begin{lstlisting}[language=Perl,numbers=none]
+      ($first, $second, $third) = (20, 30, 40);
+\end{lstlisting}
+\end{block}
+
+      \item Combinação de operadores com atribuição.
+      
+         \begin{itemize}
+         \item \lstinline[language=Pascal]!m  -=  10   m  *=  30!
+         \end{itemize}
+     
+
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Acesso a Variáveis}
+   \begin{itemize}
+   \item Observe os códigos abaixo:
+      \begin{itemize}
+      \item \lstinline[language=Pascal]!read ( n );! \;  \lstinline[language=Pascal]!n :=  n + 1;! \;   \lstinline[language=Pascal]!write ( n );!
+      \end{itemize}
+   \item  \textbf{Quais os acessos a  } \textbf{n} \textbf{?}
+   \item  \textbf{O que significam?} \\[2mm]
+   \item Dois contextos possíveis
+      \begin{itemize}
+      \item uma referência para a variável
+      \item o conteúdo da variável (valor)
+      \end{itemize}
+   \item uma variável sempre produz uma referência  (identificado é associado a uma declaração)
+      \begin{itemize}
+      \item operação implícita substitui a referência pelo conteúdo  (``dereferenciação'')
+      \item \lstinline[language=Pascal]!read( n );! \;  \lstinline[language=Pascal]!n :=  valor(n) + 1;! \;   \lstinline[language=Pascal]!write ( valor(n) );!
+      \end{itemize}
+   \end{itemize}
+\end{frame}
+
+
+
+\end{document}

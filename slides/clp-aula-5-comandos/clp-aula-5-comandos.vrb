@@ -1,0 +1,20 @@
+\frametitle{Iteração baseada em estruturas de dados}
+
+\begin{itemize}
+    \item C\# e F\# possuem classes genéricas que podem ser iteradas com o comando \lstinline[language={[Sharp]C}]|foreach|
+    \item \textit{Collections} que implementam a interface \texttt{IEnumerator} pode usar  \lstinline[language={[Sharp]C}]|foreach|.
+\end{itemize}
+
+\begin{block}{Exemplo em C\#}
+    \scriptsize
+    \centering
+    \begin{lstlisting}[language={[Sharp]C},numbers=none]
+    List<String> nomes = new List<String>();
+    nomes.Add("Joao");
+    nomes.Add("Ana");
+    nomes.Add("Maria");	
+    foreach (Strings nome in nomes)
+        Console.WriteLine("Nome: {0}", nome);
+    \end{lstlisting}
+\end{block}	
+

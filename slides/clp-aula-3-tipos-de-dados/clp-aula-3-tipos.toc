@@ -1,0 +1,17 @@
+\babel@toc {brazil}{}
+\babel@toc {brazil}{}
+\beamer@sectionintoc {1}{Valores e tipos}{3}{0}{1}
+\beamer@subsectionintoc {1}{1}{Valores e tipos}{3}{0}{1}
+\beamer@subsectionintoc {1}{2}{Tipos primitivos}{4}{0}{1}
+\beamer@subsubsectionintoc {1}{2}{1}{Tipos enumerados}{10}{0}{1}
+\beamer@subsubsectionintoc {1}{2}{2}{Tipos subfaixa}{12}{0}{1}
+\beamer@subsectionintoc {1}{3}{Tipos compostos}{13}{0}{1}
+\beamer@subsubsectionintoc {1}{3}{1}{Produto cartesiano}{16}{0}{1}
+\beamer@subsubsectionintoc {1}{3}{2}{União disjunta}{21}{0}{1}
+\beamer@subsubsectionintoc {1}{3}{3}{Mapeamento}{26}{0}{1}
+\beamer@subsubsectionintoc {1}{3}{4}{Conjunto potência}{39}{0}{1}
+\beamer@subsectionintoc {1}{4}{Tipos recursivos}{41}{0}{1}
+\beamer@sectionintoc {2}{Sistemas de tipos}{42}{0}{2}
+\beamer@subsectionintoc {2}{1}{Verificador de tipos}{42}{0}{2}
+\beamer@subsectionintoc {2}{2}{Tipagem estática de dinâmica}{44}{0}{2}
+\beamer@subsectionintoc {2}{3}{Equivalência de tipos}{48}{0}{2}

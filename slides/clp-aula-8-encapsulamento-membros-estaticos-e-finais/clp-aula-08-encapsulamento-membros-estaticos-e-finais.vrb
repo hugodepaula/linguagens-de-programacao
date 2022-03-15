@@ -1,0 +1,23 @@
+\frametitle{Classe Produto: atributo final}
+\begin{lstlisting}
+class Aplicacao {
+   public static void main(String args[]) {
+
+      Produto p1 = new Produto();
+      Produto p2 = new Produto("Shulambs", 1.99F, 600);
+
+      int novosProdutos = Integer.parseInt(
+           JOptionPane.showInputDialog(null,
+           "Digite quantos produtos deseja adicionar ao estoque:",
+           "Controle de estoque",
+           JOptionPane.OK_CANCEL_OPTION));
+
+      if ((p2.getQuant() + novosProdutos) > Produto.MAX_ESTOQUE) {
+         JOptionPane.showMessageDialog(null,
+            "Estourou o limite máximo do estoque.",
+            "Erro alterando estoque", JOptionPane.ERROR_MESSAGE);
+      } else {
+         p2.setQuant(p2.getQuant() + novosProdutos);
+      }
+}
+\end{lstlisting}

@@ -1,0 +1,11 @@
+\babel@toc {brazil}{}\relax 
+\babel@toc {brazil}{}\relax 
+\beamer@sectionintoc {1}{Armazenamento}{3}{0}{1}
+\beamer@subsectionintoc {1}{1}{Vari\'{a}vel}{3}{0}{1}
+\beamer@subsectionintoc {1}{2}{Atributos das vari\'{a}veis}{4}{0}{1}
+\beamer@sectionintoc {2}{Associa\c {c}\~{a}o}{6}{0}{2}
+\beamer@subsectionintoc {2}{1}{\it Type Binding}{9}{0}{2}
+\beamer@subsectionintoc {2}{2}{Tempo de vida}{10}{0}{2}
+\beamer@sectionintoc {3}{Escopo}{13}{0}{3}
+\beamer@subsectionintoc {3}{1}{Escopo est\'{a}tico}{19}{0}{3}
+\beamer@subsectionintoc {3}{2}{Escopo din\^{a}mico}{20}{0}{3}

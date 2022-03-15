@@ -1,0 +1,25 @@
+\frametitle{Equivalência por nomes}
+
+\textbf{Equivalência por Nome}:   $T  \equiv  T'$  se e somente se  possuem o mesmo nome de tipo.
+
+Exemplo:
+\begin{lstlisting}[language=Pascal]
+	type
+		T1  =   file  of   Integer;
+		T2  =   file  of   Integer;
+	var
+		f1 : T1;       	f2  :  T2;
+
+	procedure   p(var  f  :  T1);
+\end{lstlisting}
+
+
+p( f1 )  é  válido?	p( f2 ) é válido?
+
+Usam a mesma declaração de tipos?
+
+\begin{itemize}
+\item Tipos subfaixa de inteiros não são equivalentes a tipos inteiros.
+\item Parâmetros formais devem possui o mesmo tipo que os parâmetros reais, ou de chamada.
+\end{itemize}
+

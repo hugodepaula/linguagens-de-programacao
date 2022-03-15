@@ -1,0 +1,714 @@
+\documentclass[handout]{beamer}
+
+\usetheme{Warsaw}
+
+\usepackage[brazil]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{times}
+\usepackage[T1]{fontenc}
+\usepackage{epsfig}
+\usepackage{listings}
+\usepackage{tikz}
+
+%\usepackage{dcolumn}
+%\newcolumntype{.}{D{.}{.}{-1}}
+%\newcolumntype{d}[1]{D{.}{.}{#1}}
+%\usetheme{Berkeley}
+
+\newcommand{\be}{\begin{enumerate}[<+->]}
+\newcommand{\ee}{\end{enumerate}}
+\newcommand{\bq}{\begin{quote}}
+\newcommand{\eq}{\end{quote}}
+\newcommand{\bd}{\begin{description}[<+->]}
+\newcommand{\ed}{\end{description}}
+\newcommand{\bi}{\begin{itemize}[<+->]}
+\newcommand{\ei}{\end{itemize}}
+
+\title[Conceitos de Linguagens de Programação]
+{%
+	Abstração%
+}
+\author[Prof. Hugo de Paula]
+{
+	Prof.~Hugo~de~Paula
+}
+\institute[DCC / PUC Minas]
+{\epsfig{file=puclogo_small_bw,width=1.5cm} \\
+	\textsc{Pontifícia Universidade Católica de Minas Gerais}\\
+	Departamento de Ciência da Computação
+}
+\date[]{}
+
+\lstset{language=Java,
+        basicstyle=\scriptsize,
+        commentstyle=\color{red},
+        showstringspaces=false,
+        numbers=left,
+        numberstyle=\tiny}
+
+
+\begin{document}
+
+\selectlanguage{brazil}
+
+
+
+\begin{frame}
+   \titlepage
+\end{frame}
+
+\addtobeamertemplate{frametitle}{}{%
+	\begin{tikzpicture}[remember picture,overlay]
+	\node[anchor=north east,yshift=3pt,xshift=3pt] at (current page.north east) {\epsfig{file=puclogo_small_bw,width=1cm}};
+	\end{tikzpicture}}
+
+\begin{frame}
+   \frametitle{Sumário}
+   \tableofcontents[pausesections]
+\end{frame}
+
+%\AtBeginSection[] % Do nothing for \section*
+%{
+%
+%\begin{frame}<beamer>
+%\frametitle{Outline}
+%\tableofcontents[currentsection]
+%\end{frame}}
+
+\section{Abstração}
+
+\subsection{Definição de Abstração}
+
+
+\begin{frame}{Abstrações}
+    \begin{block}{Abstração}
+         Entidade que incorpora uma computação. Remove qualquer dependência de aspectos específicos de implementação.
+    \end{block}
+\begin{itemize}
+   \item Ideia: permitir expressar ``o que'' uma parte de um programa faz, sem que seja preciso dizer ``como''
+   \item Uma abstração produz encapsulamento
+   \begin{itemize}
+      \item \textit{visão interna}: visão do programador da abstração
+      \item \textit{visão externa}: visão do usuário da abstração
+   \end{itemize}
+
+   \item Dois modelos de abstração básicos:
+   \begin{itemize}
+       \item Abstração de processo.
+       \item Abstração de dados.
+   \end{itemize}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Exemplo de abstrações de processo}
+   \begin{itemize}
+   \item \textbf{Funções}: incorpora uma expressão que deve ser avaliada
+   \begin{itemize}
+      \item Visão do usuário: mapeia argumentos em um resultado
+      \item Visão do programador: avalia corpo da função com parâmetros formais associados a seus respectivos argumentos
+   \end{itemize}
+
+   \item \textbf{Procedimentos}: incorpora uma sequência de comandos
+   \begin{itemize}
+      \item Visão do usuário: atualiza ambiente de execução
+      \item Visão do programador: executa corpo do procedimento com parâmetros formais associados a seus respectivos argumentos
+   \end{itemize}
+   \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Abstrações de subprogramas}
+
+\begin{block}{Exemplo de abstração de função em Pascal}
+    \begin{lstlisting}[language=Pascal,numbers=none]
+    function potencia (x: real; n: integer): real
+    begin
+       if n = 1
+         then potencia:= x
+         else potencia:= x * potencia (x, n-1)
+    end;
+    \end{lstlisting}
+\end{block}
+
+\textbf{Crítica}: identificador função denota duas entidades diferentes
+
+\end{frame}
+
+
+\subsection{Princípio da Abstração}
+
+\begin{frame}{Princípio da Abstração}
+
+\begin{block}{Princípio da Abstração}
+    Para cada construção sintática,  semanticamente relevante na linguagem, deve existir um mecanismo de abstração.\footnote{Alfred John Cole, Ronald Morrison (1982)}
+\end{block}
+
+Assim:
+
+\bi
+\item para comandos existem procedimentos
+\item para expressões existem funções
+\item para tipos abstratos de dados existem classes e objetos
+\ei
+
+\textit{Extreme Programming (XP)}: \textit{automatize cada processo que deve ser automatizado. Se uma tarefa é repetitiva, torne-a um script (abstração)}.
+
+\end{frame}
+
+\subsection{Subprogramas}
+
+\begin{frame}{Subprogramas}
+
+\begin{itemize}
+    \item Cada subprograma deve ter um único ponto de entrada.
+    \item A execução do programa que chama o subprograma é suspensa até que a execução do subprograma seja terminada (modelo síncrono).
+    \item No modelo assíncrono, a execução do programa continua enquanto o subprograma é executado e um valor futuro é atribuído. Quando o valor futuro é necessário, o programa precisa aguardar explicitamente o término do subprograma.
+    \item Controle sempre retorna para o ponto de chamada ao final da execução do subprograma.
+    \item Uma chamada a um subprograma é uma requisição explícita de que o subprograma deve ser executado.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Definições básicas de subprogramas}
+\begin{itemize}
+    \item Uma \textbf{definição} de um subprograma descreve a interface e as ações da abstração de subprograma.
+    \item O \textbf{cabeçalho} é a primeira parte da definição, e inclui: nome, tipo do subprograma e os parâmetros formais.
+    \item A \textbf{assinatura} (ou perfil dos parâmetros) inclui: quantidade, ordem e tipos dos parâmetros.
+    \item Um \textbf{protocolo} corresponde à assinatura do subprograma e seu valor de retorno, no caso de funções.
+    \item \textbf{Declarações} de subprogramas provêm o protocolo, mas não o corpo do subprograma.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Registro de ativação}
+\begin{itemize}
+    \item Bloco de informação associado a cada chamada de subprograma.
+    \item Elementos:
+    \begin{itemize}
+        \item parâmetros e variáveis locais.
+        \item endereço de retorno.
+        \item estado dos registradores.
+        \item variáveis temporárias.
+        \item valor de retorno.
+        \item link estático ao ``pai'' (\textit{parent}) do subprograma (ponto de chamada).
+        \item link dinâmico para o registro de ativação do escopo de chamada.
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\section{Passagem de parâmetros}
+
+\subsection{Parâmetros}
+
+\begin{frame}[fragile]{Parâmetros}
+
+\begin{block}{Parâmetros em C}
+	\begin{lstlisting}[language=C,numbers=none]
+	float area (float raio) {
+		return pi * raio * raio;
+	}
+	area (5); ...      // chamada da função
+	area (a + b);
+	\end{lstlisting}
+\end{block}
+
+  \bi
+    \item \textbf{Argumento}: valor que é passado para a função. Exemplo:  \emph{5} e resultado da avaliação de  \emph{a+b}
+    \item \textbf{Parâmetro de chamada ou parâmetro real}: expressão que produz o argumento. Exemplo:  \emph{5} e  \emph{a+b}
+    \item \textbf{Parâmetro formal}: identificador que denota o argumento no interior da função. Exemplo:  \emph{raio }
+  \ei
+\end{frame}
+
+\begin{frame}{Correspondência entre parâmetro real e formal}
+\begin{itemize}
+    \item \textbf{Posicional}:
+    \begin{itemize}
+        \item A associação entre o parâmetro real e o formal é dada pela sua posição.
+        \item Seguro e eficiente.
+    \end{itemize}
+
+    \item \textbf{Por palavra chave}:
+    \begin{itemize}
+        \item O nome do parâmetro formal é especificado na chamada juntamente com o parâmetro real.
+        \item Vantagem: Parâmetros podem aparecer em qualquer ordem.
+        \item Desvantagem: deve-se conhecer o nome do parâmetro formal.
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\subsection{Parâmetros \textit{default}}
+
+\begin{frame}[fragile]{Valores \textit{default}}
+
+\begin{itemize}
+    \item Algumas linguagens permitem que parâmetros formais tenham valores \textit{default}. P. Ex.: C++, Python, Ruby, PHP.
+    \item Se não for passado o parâmetro real, parâmetro formal assume valor \textit{default}.
+    \begin{itemize}
+        \item Em C++, parâmetros \textit{default} devem aparecer no final, pois utiliza notação posicional.
+    \end{itemize}
+\end{itemize}
+
+\begin{block}{Exemplo em C}
+    \begin{lstlisting}[language=C,numbers=none]
+    void shulambs(int a, int b = 10) {
+        // faz alguma coisa
+    }
+    int main() {
+        shulambs(10);
+        shulambs(10, 20); // sobrepoe o valor default
+    }
+    \end{lstlisting}
+\end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]{Número variável de parâmetros}
+\begin{itemize}
+    \item C\# aceita número variável de parâmetros, desde que eles sejam do mesmo tipo. Parâmetro formal é um arranjo precedido pela palavra \textbf{params}.
+\end{itemize}
+
+
+\begin{block}{Exemplo em C\#}
+    \begin{lstlisting}[language={[Sharp]C},numbers=none]
+    public static void ParamVariavel(params int[] lista)
+    {
+        for (int i = 0; i < lista.Length; i++)
+        {
+            Console.Write(lista[i] + " ");
+        }
+        Console.WriteLine();
+    }
+    \end{lstlisting}
+\end{block}
+
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Número variável de parâmetros}
+
+\begin{block}{Exemplo em Python}
+    \begin{lstlisting}[language=Python,numbers=none]
+    def multiplica(x, y):
+        print (x * y)
+    multiplica(1, 2, 3)
+
+# TypeError: multiplica() takes 2 positional arguments
+# but 3 were given
+
+    def multiplicaVar(*args):
+        res = 1
+        for num in args:
+            res *= num
+        print(res)
+    multiplicaVar(2, 3, 4)
+    multiplicaVar(2, 3, 4, 5)
+   \end{lstlisting}
+\end{block}
+
+\end{frame}
+
+
+
+\section{Mecanismos de passagem de parâmetros}
+
+\begin{frame}{Mecanismos de passagem de parâmetros}
+   \bi
+   \item \textbf{Mecanismos de cópia}: valores são copiados na entrada e/ou saída da abstração
+   \item \textbf{Mecanismos de definição}: permite que um parâmetro formal  \emph{x} seja associado diretamente ao argumento
+   \ei
+\end{frame}
+
+\subsection{Mecanismos de cópia}
+
+\begin{frame}[fragile]{Mecanismos de cópia}
+   \bi
+   \item Valores são copiados na entrada e/ou saída da abstração
+      \bi
+      \item Passagem por valor
+      \item Passagem por resultado
+      \item Passagem por valor-resultado
+      \ei
+   \ei
+
+\begin{block}{Exemplo em ADA}
+	\begin{lstlisting}[language=ADA,numbers=none]
+    procedure p (in x: integer, out y: real, in out z: real)
+    Chamada: p (10, a, b)
+	\end{lstlisting}
+\end{block}
+
+\begin{block}{}
+\scriptsize
+\centering
+    \begin{tabular}{rrrr}
+    \hline
+    Modo de Passagem & Argumento & Efeito na Entrada & Efeito na Saída \\
+    \hline
+    Valor (in)               & valor     & x := 10 & - \\
+    Resultado (out)          & variável  &   -     & a := y \\
+    Valor-Resultado (in out) & variável  & z := b  & b := z \\
+    \hline
+    \end{tabular}%
+\end{block}
+\end{frame}
+
+
+\subsection{Mecanismos de definição}
+
+
+\begin{frame}{Mecanismos de definição}
+
+   \bi
+   \item \textbf{Passagem por referência}: permite que um parâmetro formal  \emph{x} seja associado diretamente ao argumento
+      \bi
+      \item Parâmetro constante:  \lstinline[language=C]!void f (const int &x)!
+      \item Parâmetro variável: \lstinline[language=C]!void f (int &x)!
+      \ei
+   \item Qualquer utilização de \emph{x} é na verdade uma utilização indireta do argumento (\emph{x} é um  \emph{aliasing} para o argumento)
+   \item Mecanismos disponíveis em diversas linguagens:
+      \bi
+      \item C: valor (passagem por referência simulada via ponteiros)
+      \item Pascal: valor e referência (palavra reservada var)
+      \item C++: valor e referência
+      \item Java e C\#: valor para tipos primitivos e referência para objetos de classes
+      \item ADA: valor (in), resultado (out) e valor-resultado (in out)
+      \ei
+   \ei
+\end{frame}
+
+\begin{frame}[fragile]{Passagem de Subprogramas como Parâmetro}
+
+   \bi
+   \item Parametrizar um subprograma com um parâmetro que representa um outro subprograma (procedimento ou função).
+   \bi
+   \item Em C e C++: por meio de ponteiros
+   \ei
+   \ei
+\begin{block}{}
+	\begin{lstlisting}[language=C,numbers=none,basicstyle=\tiny]
+   double integral(double (*fun)(double), double inf, double sup) {
+      double soma = (*fun)(inf), dx = 0.00001;
+      for (float x = inf + dx; x <= sup; x += dx)
+         soma += (*fun)(x);
+      return soma * dx;
+   }
+   double f(float x) {
+      return x + 1;
+   }
+   void main() {
+      cout << integral (f, 0, 3.1415926);
+   }
+	\end{lstlisting}
+\end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo}
+
+   \bi
+   \item Que valor será impresso, supondo passagem por:
+   \item   a) valor-resultado       b) referência?
+   \ei
+
+\begin{block}{Exemplo em Pascal}
+	\begin{lstlisting}[language=Pascal]
+     program  Shulambs (input, output);
+     var A: integer;
+     procedure qquer(var x : integer);
+     begin
+        x := 2;
+        A := 0;
+     end;
+     begin
+        A := 1;
+        qquer(A);
+        writeln(A)
+     end.
+	\end{lstlisting}
+\end{block}
+\end{frame}
+
+\begin{frame}{Mecanismos de definição}
+
+   \bi
+   \item \textbf{Passagem por nome}: o parâmetro formal recebe como argumento o próprio nome do parâmetro de chamada. Em cada instante da execução, o parâmetro é interpretado baseado no seu nome por ocasião da chamada.
+      \bi
+      \item parâmetro reflete as alterações de valor do argumento.
+      \item argumento é avaliado e pode se modificar durante a execução do procedimento.
+      \ei
+   \item utilizado para implementar avaliação tardia (\textit{lazy evaluation})
+   \item Exemplos de linguagens:
+      \bi
+      \item Algol-60
+      \item LISP: através de \textit{quotation}
+      \ei
+   \ei
+\end{frame}
+
+\subsection{Ordem de Avaliação}
+
+
+\begin{frame}
+\frametitle{Ordem de Avaliação}
+
+   \bi
+   \item Quando uma função é chamada, em que momento o parâmetro real (ou de chamada) é avaliado ?
+   \item Duas alternativas:
+      \bi
+      \item Avaliação de Ordem Aplicativa (\emph{Eager Evaluation})
+      \item Avaliação de Ordem Normal  (\emph{Lazy Evaluation})
+      \ei
+   \item Avaliação de Ordem Aplicativa:
+      \bi
+      \item Parâmetro real avaliado uma única vez, no momento da chamada
+      \item Exemplos: Algol-68, Pascal, C, C++, Java, C\#, LISP, etc
+      \ei
+   \item Avaliação de Ordem Normal:
+      \bi
+      \item Parâmetro real avaliado toda vez que argumento for utilizado no interior da função.
+      \item Exemplo: Algol-60 (passagem de parâmetros por nome), LISP (quote/eval), Haskell,
+          Scheme, JavaScript, Ruby, etc
+      \ei
+   \ei
+\end{frame}
+
+\begin{frame}[fragile]{Ordem de Avaliação}
+
+   \bi
+   \item  Exemplo: Para n = 2 e t = 2, qual será o resultado da chamada cand (n > 0 , t/n > 0.5) ?  E se  n = 0?
+
+\begin{block}{Exemplo em ML}
+	\begin{lstlisting}[language=ML,numbers=none]
+     fun cand (b1: bool, b2: bool) =
+         if b1 then b2 else false
+	\end{lstlisting}
+\end{block}
+   \item Função  \emph{strict} (rigorosa) = uma chamada à função só pode ser avaliada se todos os seus argumentos puderem ser avaliados.
+   \item Função  \emph{nonstrict} = uma função é dita ser  \emph{nonstrict} com relação a um argumento  \emph{n}, se uma chamada à função puder ser avaliada, mesmo que o  \emph{n}-ésimo argumento não possa ser avaliado
+   \ei
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Exemplo de Avaliação Tardia}
+
+\begin{block}{Exemplo em JavaScript}
+	\begin{lstlisting}[language=java,numbers=none]
+function uns() {
+    return new Stream( 1, uns );
+}
+function numerosNaturais() {
+    return new Stream(
+        1,
+        function () {
+            return uns().add( numerosNaturais() );
+        }
+    );
+}
+numerosNaturais().take( 5 ).print(); // imprime 1, 2, 3, 4, 5
+\end{lstlisting}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo de Avaliação Tardia}
+
+\begin{block}{Exemplo em JavaScript}
+	\begin{lstlisting}[language=java,numbers=none]
+uns
+={ 1, uns }
+={ 1, { 1, uns } }
+= ...
+={ 1, { 1, { 1, ... // infinitamente!
+
+nat
+={ 1, uns+nat }
+={ 1, { 1, uns } + { 1, uns+nat } } = { 1, { 1+1, uns+uns+nat } }
+={ 1, { 2, { 1, uns } + { 1, uns } + { 1, nat } } }
+= ...
+={ 1, { 2, { 3, ... // e assim por diante.
+\end{lstlisting}
+\end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]{Exemplo de Avaliação Tardia}
+
+\begin{block}{Exemplo em C\#}
+	\begin{lstlisting}[language={[Sharp]C},numbers=none]
+public int Soma()
+{
+    int x = 0;
+    int y = 0;
+    Lazy<int> s = new Lazy<int>(() => x + y);
+    x = 10;
+    y = 20;
+    return s.Value; // resposta 30
+}
+\end{lstlisting}
+\end{block}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Exemplo de Avaliação Tardia}
+
+\begin{block}{Exemplo em C\#: Fibonacci infinito}
+	\begin{lstlisting}[language={[Sharp]C},numbers=none]
+public static IEnumerable<long> Serie() {
+  long n1 = 1;
+  long n2 = 1;
+
+  yield return n1;
+  yield return n2;
+
+  while (true) {
+     long temp = n1 + n2;
+     n1 = n2;
+     n2 = temp;
+     yield return temp;
+  }
+}
+var primeiros10elementos = Fibonnaci.Serie().Take(10)
+\end{lstlisting}
+\end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]{Exemplo de Avaliação Tardia}
+
+\begin{block}{Exemplo em Haskell: Quicksort lazy}
+\begin{lstlisting}[language={Haskell},numbers=none]
+qSort [] = []
+qSort (x:xs) =
+   qSort (filter (< x) xs) ++ [x] ++ qSort (filter (>= x) xs)
+\end{lstlisting}
+\end{block}
+
+Se quisermos encontrar o menor elemento de uma lista, não precisamos ordenar a lista inteira:
+
+\begin{block}{}
+\begin{lstlisting}[language={Haskell},numbers=none]
+menor lista = head (qSort lista)
+\end{lstlisting}
+\end{block}
+
+\end{frame}
+
+
+\begin{frame}{Closure}
+
+\begin{itemize}
+\item Closure é um subprograma e seu ambiente de referenciação em que foi definido.
+\item O ambiente de referenciação é necessário se o subprograma for chamado de qualquer lugar do programa.
+\item Uma linguagem com escopo estático que não permite subprogramas aninhados não precisa de Closures.
+\item Closures só são necessários se um subprograma pode acessar variáveis em escopos aninhados e pode ser chamado de qualquer lugar.
+\item Para suportar closures, uma LP pode precisar prover extensão de tempo de vida de uma variável, pois um subprograma pode acessar uma variável não local que normalmente já não estaria alocada.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Exemplo de Closure}
+
+\begin{enumerate}
+\item O Closure no JavaScript é a função anônima retornada pelo \lstinline|somador|.
+\end{enumerate}
+\begin{block}{Exemplo em JavaScript}
+	\begin{lstlisting}[language=java,numbers=none]
+    function somador(x) {
+     return function(y) {return x + y;}
+   }
+   ...
+   var soma10 = somador(10);
+   var soma5 = somador(5);
+   document.write("Soma 10 a 20: " + soma10(20) + "<br />");
+   document.write("Soma 5 a 20: " + soma5(20) + "<br />");
+\end{lstlisting}
+\end{block}
+\end{frame}
+
+
+
+
+
+\begin{frame}[fragile]{Exemplo de Closure}
+
+\begin{itemize}
+\item Podemos escrever um Closure em C\# usando um \textit{delegate} anônimo.
+\item \lstinline|Func<int, int>|  (tipo de retorno) especifica um \textit{delegate} que recebe um inteiro como parâmetro e retorna outro inteiro.
+
+\end{itemize}
+\begin{block}{Exemplo em C\#}
+	\begin{lstlisting}[language={[Sharp]C},numbers=none]
+     static Func<int, int> somador(int x) {
+       return delegate(int y) {return x + y;};
+    }
+    ...
+    Func<int, int> soma10 = somador(10);
+    Func<int, int> soma5 = somador(5);
+    Console.WriteLine("Soma 10 a 20: {0}", soma10(20));
+    Console.WriteLine("Soma 5 a 20: {0}", soma5(20));
+\end{lstlisting}
+\end{block}
+\end{frame}
+
+\begin{frame}{Co-rotinas}
+    \begin{block}{Corotinas}
+        São subprogramas que possuem múltiplas entradas e se auto controlam.
+    \end{block}
+
+    \begin{itemize}
+        \item Uma \textit{chamada} a uma co-rotina é denominada \textit{resume}.
+        \item O primeiro \textit{resume} inicia a co-rotina, mas as \textit{chamadas} subsequentes entram nos pontos logo após a última instrução executada.
+        \item Co-rotinas podem se \textit{resumir} eternamente.
+        \item Co-rotinas provêm execução ``\textit{quasi-concorrente}'' de blocos de programa: execuções são intercaladas, mas não sobrepostas.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Exemplo de execução de co-rotinas}
+    \begin{center}
+        \includegraphics[height=.7\textheight]{corotina1.png}\footnote{SEBESTA (2019). \textit{Conceitos de Linguagens de Programação. 11ed}, Fig. 9.3}
+    \end{center}
+\end{frame}
+
+
+\begin{frame}{Exemplo de execução de co-rotinas}
+    \begin{itemize}
+        \item Principal versão de co-rotina é o modelo produtor/consumidor.
+        \item Consumidor transfere controle ao produtor quanto precisa do próximo valor gerado pelo produtor.
+        \item Produtor retorna o controle ao consumidor com o valor produzido.
+        \item Exemplo:
+        \begin{itemize}
+            \item Parser do compilador solicita o próximo \textit{token} ao analisador léxico.
+            \item Analisador léxico produz \textit{tokens} sob demanda.
+        \end{itemize}
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo de co-rotinas}
+\begin{block}{Exemplo em Python}
+    \begin{lstlisting}[language=Python,numbers=none]
+def rangeOnDemand(st, to):
+  i = st
+  while (i < to):
+    yield i
+    i += 1 # (resume) Próxima execução continua deste ponto
+
+for i in rangeOnDemand(1, 5):
+  print("{0}a exec de randOnDemand".format(i))
+\end{lstlisting}
+\end{block}
+
+\begin{block}{Saída}
+\scriptsize
+\begin{verbatim}
+1a exec de randOnDemand
+2a exec de randOnDemand
+3a exec de randOnDemand
+4a exec de randOnDemand
+\end{verbatim}
+\end{block}
+
+\end{frame}
+
+\end{document}

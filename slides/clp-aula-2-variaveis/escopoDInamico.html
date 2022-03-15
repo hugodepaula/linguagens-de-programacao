@@ -1,0 +1,28 @@
+<html>
+<head>
+   <script type="text/javascript">
+    function scale(x) {
+         return x*s;
+    }
+
+    function duplica(x) {
+	    s = 2;
+        return scale(x);
+    }
+
+
+    function triplica(x) {
+	    s = 3;
+        return scale(x);
+    }
+
+    function principal() {
+         document.getElementById('txt').innerHTML = " Duplica: " + duplica(10) + "    Triplica: " + triplica(10);
+    }
+    </script>
+   </head>
+
+<body onload="principal()">
+    <div id="txt"></div>
+</body>   
+</html>

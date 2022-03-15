@@ -1,0 +1,24 @@
+\frametitle{Exemplo de mapeamentos}
+
+\begin{lstlisting}
+public class ExemploMap {
+    public static void main(String[] args) {
+        Map<String, Integer> mapH = new HashMap<String, Integer>();
+        Integer UM = new Integer(1);
+        for (int i = 0, n = args.length; i < n; i++) {
+            String chave = args[i];
+            Integer frequencia = mapH.get(chave);
+            if (frequencia == null) {
+                frequencia = UM;
+            } else {
+                int valor = frequencia.intValue();
+                frequencia = new Integer(valor + 1);
+            }
+            mapH.put(chave, frequencia);
+        }
+        System.out.println(mapH);
+        Map<String, Integer> mapOrd = new TreeMap<String, Integer>(mapH);
+        System.out.println(mapOrd);
+    }
+}
+\end{lstlisting}

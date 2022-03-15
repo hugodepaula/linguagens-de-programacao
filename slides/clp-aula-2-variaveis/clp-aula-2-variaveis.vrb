@@ -1,0 +1,21 @@
+\frametitle{Lixo}
+
+   \bi
+   \item \textbf{Lixo} \'{e} a mem\'{o}ria que foi alocada no ambiente mas se torna inacess\'{\i}vel ao programa
+      \bi
+      \item Pode surgir quando um programador se esquece de desalocar uma vari\'{a}vel din\^{a}mica antes de alterar o estado do ponteiro que referencia esta regi\~{a}o de mem\'{o}ria
+			\ei
+   \ei
+
+	\begin{block}{Exemplo em C de vazamento de mem\'{o}ria}
+	\begin{lstlisting}[language=c++,numbers=none,basicstyle=\tiny]
+   int *i;
+
+   i = (int *) malloc(sizeof(int));
+   i = 0;
+   \end{lstlisting}
+   \end{block}	
+
+   \bi
+   \item Programa produz lixo, tamb\'{e}m chamado de vazamento de mem\'{o}ria (\textit{memory leak}) e pode esgotar a mem\'{o}ria do sistema
+   \ei

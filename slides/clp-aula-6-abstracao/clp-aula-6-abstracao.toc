@@ -1,0 +1,13 @@
+\babel@toc {brazil}{}\relax 
+\babel@toc {brazil}{}\relax 
+\beamer@sectionintoc {1}{Abstra\c c\~ao}{3}{0}{1}
+\beamer@subsectionintoc {1}{1}{Defini\c c\~ao de Abstra\c c\~ao}{3}{0}{1}
+\beamer@subsectionintoc {1}{2}{Princ\IeC {\'\i }pio da Abstra\c c\~ao}{6}{0}{1}
+\beamer@subsectionintoc {1}{3}{Subprogramas}{7}{0}{1}
+\beamer@sectionintoc {2}{Passagem de par\^ametros}{10}{0}{2}
+\beamer@subsectionintoc {2}{1}{Par\^ametros}{10}{0}{2}
+\beamer@subsectionintoc {2}{2}{Par\^ametros \textit {default}}{12}{0}{2}
+\beamer@sectionintoc {3}{Mecanismos de passagem de par\^ametros}{15}{0}{3}
+\beamer@subsectionintoc {3}{1}{Mecanismos de c\'opia}{16}{0}{3}
+\beamer@subsectionintoc {3}{2}{Mecanismos de defini\c c\~ao}{17}{0}{3}
+\beamer@subsectionintoc {3}{3}{Ordem de Avalia\c c\~ao}{21}{0}{3}

@@ -1,0 +1,479 @@
+\documentclass[handout]{beamer}
+
+\input{aulas-beamer-preamble}
+
+
+\title[Conceitos de Linguagens de Programação]
+{%
+	Classes e Construtores%
+}
+\author[Prof. Hugo de Paula]
+{
+	Prof.~Hugo~de~Paula
+}
+\institute[DCC / PUC Minas]
+{\epsfig{file=puclogo_small_bw,width=1.5cm} \\
+  \textsc{Pontifícia Universidade Católica de Minas Gerais}\\
+	Departamento de Ciência da Computação
+}
+\date[]{}
+
+\lstset{language=Java,
+   basicstyle=\scriptsize,
+   commentstyle=\color{red},
+   showstringspaces=false,
+   numbers=none,
+   numberstyle=\tiny}
+
+\begin{document}
+
+
+\selectlanguage{brazil}
+
+\begin{frame}
+   \titlepage
+\end{frame}
+
+%\addtobeamertemplate{frametitle}{}{%
+%	\begin{tikzpicture}[remember picture,overlay]
+%	\node[anchor=north east,yshift=2pt] at (current page.north east) {\epsfig{file=puclogo_small_bw,width=1.2cm}};
+%	\end{tikzpicture}}
+
+
+%\addtobeamertemplate{frametitle}{}{%
+	%\begin{tikzpicture}[node distance=0cm, remember picture, overlay, every node/.style={inner sep=0,outer sep=0, node distance=0cm, baseline=0cm}]
+	%\node[anchor=north east] at (current page.north east) {\epsfig{file=puclogo_small_bw,width=1cm}};
+	%\end{tikzpicture}}
+
+
+%\logo{\includegraphics[height=0.8cm]{puclogo_small_bw.pdf}\vspace{220pt}}
+
+
+\begin{frame}
+   \frametitle{Sumário}
+   \tableofcontents[pausesections]
+\end{frame}
+
+%\AtBeginSection[] % Do nothing for \section*
+%{
+%\begin{frame}<beamer>
+%\frametitle{Outline}
+%\tableofcontents[currentsection]
+%\end{frame}}
+
+
+\addtobeamertemplate{frametitle}{}{%
+   \begin{textblock*}{10mm}(.9945\textwidth,-1.82cm)
+	   \includegraphics[height=1cm]{puclogo_small_bw.pdf}
+   \end{textblock*}
+}
+
+
+	
+\section{Linguagem Java}
+
+\begin{frame}{Histórico do Java}
+    \bi
+    \item Linguagem orientada a objetos.
+    \item Desenvolvida em 1991 por James Gosling.
+    \item 1a versão lançada 1995.
+    \item Código fonte e objeto portáveis para diversas arquiteturas e sistemas operacionais.
+    \item Fácil integração com páginas HTML (\textit{Applets}).
+    \item Linguagem de propósito geral derivada do C++.
+    \item Linguagem compilada e depois interpretada: 
+   \bi
+  \item \textit{Bytecode} -- ling. assembly de uma máquina hipotética.
+   \ei
+    \ei
+    \begin{center}
+    \textit{``Linguagem simples, orientada por objetos, distribuída, interpretada, robusta, segura, independente de arquitetura, portável, de alta performance, multi-threaded e dinâmica.''} \\
+    SUN Microsystems,  Maio de 1995  
+    \end{center}
+    
+\end{frame}
+
+\begin{frame}{Diagrama conceitual do Java}
+    \begin{figure}[h] 
+        \begin{center}
+            \includegraphics[width=0.82\textwidth]{modeloconceitual.png}
+        \end{center}
+    \end{figure}
+    \begin{center}
+        \tiny \url{https://docs.oracle.com/javase/8/docs/}
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Compilando e executando Java}
+\bi
+    \item Código-fonte: \lstinline|.java|
+    \item Compilador:
+    \bi
+        \item \lstinline|javac <nomearq.java>|
+    \ei
+    \item Arquivos objeto compilados: \lstinline|.class|
+    \item Para executar uma aplicação:
+    \bi
+        \item \lstinline|java <nomearq>|
+    \ei
+    \item Para executar um \textit{applet}:
+    \bi
+        \item \lstinline|appletviewer <nomearq.html>|
+        \item ou em algum navegador compatível.
+    \ei
+\ei
+\end{frame}
+    
+\subsection{Estrutura de uma aplicação Java}
+
+\begin{frame}{Estrutura de uma aplicação Java}
+    \bi
+        \item Classes são escritas em arquivos \lstinline|.java|.
+        \item Um arquivo \lstinline|.java| pode conter diversas classes, mas apenas uma será pública e estará visível ao resto da aplicação.
+        \item A classe pública de um arquivo \lstinline|.java| deve ter o mesmo nome do arquivo \lstinline|.java|.
+        \item As classes compiladas (arquivos \lstinline|.class|) devem estar em diretórios conhecidos do Java (variável de ambiente \lstinline|CLASSPATH|).
+        \item O diretório \textsc{<diretorio\_jdk>/jre/classes} é o local padrão para localização de classes.
+    \ei
+\end{frame}
+
+\begin{frame}{Aplicações e Applets}
+
+\bi
+    \item Aplicações console:
+    \bi
+        \item Rodam sob a JVM, que faz a tradução direta para o sistema operacional.
+        \item Utilizam apenas as interfaces de entrada e saída padrão Java: java.System, java.io, java.lang, java.util.
+    \ei
+    \item Aplicações gráficas (rodam em janelas):
+    \bi
+        \item Devem utilizar bibliotecas gráficas contidas em alguma interface da JFC (Java Foundation Classes): AWT, Swing, Java 2D, etc...
+        \item São orientadas a eventos.
+    \ei
+    \item \textit{Applets}:
+    \bi
+        \item Aplicações leves que rodam no contexto do navegador web.
+        \item \textit{Applets} são sempre pequenas aplicações gráficas. Herdam de java.Applet
+    \ei
+\ei
+\end{frame}
+    
+\begin{frame}[fragile]{Aplicação console: Exemplo}
+
+\begin{lstlisting}
+/* AloMundo.java */
+
+class AloMundo {
+    public static void main(String args[]) {
+        System.out.println("Alo Mundo!");
+    }
+}
+\end{lstlisting}
+    \bi
+        \item Colocado no arquivo \lstinline|AloMundo.java|
+        \item Java é sensível a maiúsculas e minúsculas.
+        \item Edite, compile e rode o arquivo \lstinline|AloMundo.java|
+    \ei
+\end{frame}
+    
+
+\begin{frame}[fragile]{Aplicações Gráficas: Exemplo}
+
+\begin{lstlisting}
+/* AloMundoGraphic.java */
+import javax.swing.JOptionPane; 
+
+public class AloMundoGraphic {
+    public static void main(String args[]) {
+        JOptionPane.showMessageDialog(null, "Alo Mundo!" );
+        System.exit(0);  // encerra a aplicação
+    }
+}
+\end{lstlisting}
+    \bi
+        \item Edite, compile e rode o arquivo \lstinline|AloMundoGraphic.java|.
+        \item Para fixar o conceito de pacotes, adicione a linha 
+        \item \lstinline|package AloPkg|;
+        \item No início no arquivo e tente compilar e executar o programa.
+    \ei
+\end{frame}
+
+\begin{frame}{Lançando programas Java}
+    \bi
+        \item Em aplicações, tudo começa pelo método \lstinline|main|.
+        \item \lstinline|public static void main(String args[]) { }|
+        \item \lstinline|args[]| é correspondente ao \lstinline|argv[]| do C, exceto que \lstinline|args[0]| é equivalente ao \lstinline|argv[1]|
+        \item \lstinline|main| não retorna um valor, apesar de que a JVM pode capturar códigos de saída: \lstinline|System.exit(0)|;
+    \item Em \textit{Applets} não há métodos main. Existem 3 métodos que rodam automaticamente (em ocasiões distintas) que constituem o disparo do programa: \lstinline|start|, \lstinline|init| e \lstinline|paint|.
+    \ei
+\end{frame}
+
+	
+\section{Classes e objetos}
+
+\begin{frame}[fragile]{Classes e objetos}
+    
+    \begin{block}{Ocultação de informação}
+      Toda informação a respeito de um módulo deve ser privativa do módulo, exceto se for explicitamente declarada como pública.
+    \end{block}
+    
+    \bi
+    \item Modularidade produz encapsulamento.
+    
+    \item Entidades semelhantes formam uma classe de objetos.
+        \bi
+            \item Um objeto representa uma entidade referenciável (identificada).
+        \ei
+    \ei
+\end{frame}
+
+
+\begin{frame}[fragile]{Math Object}
+\begin{multicols}{2}
+    \begin{center}
+        \includegraphics[width=0.45\textwidth]{mathclass.png}
+    \end{center} 
+
+\begin{lstlisting}[language=HTML,basicstyle=\tiny]
+<html>
+<body>
+
+<script type="text/javascript">
+
+document.write(Math.round(0.60) + "<br />");
+document.write(Math.round(0.50) + "<br />");
+document.write(Math.round(0.49) + "<br />");
+document.write(Math.round(-4.40) + "<br />");
+document.write(Math.round(-4.60));
+
+</script>
+
+</body>
+</html>
+\end{lstlisting}
+\end{multicols}    
+\end{frame}
+
+\subsection{Exemplo: Estoque de Produtos}
+
+\begin{frame}[fragile]{Exemplo: Estoque de Produtos}
+    Criar uma classe \lstinline|Produto| para um sistema de gerenciamento de estoque.
+    
+    \bi
+        \item Atributos:
+        \bi
+            \item \lstinline|descricao : String|
+            \item \lstinline|preco : float|
+            \item \lstinline|quant : int|
+        \ei
+        \item Métodos:
+        \bi
+            \item \lstinline|emEstoque() : bool|
+            \item \lstinline|incializaProduto(String, float, int)|
+        \ei
+    \ei 
+\end{frame}
+
+\begin{frame}[fragile]{Definindo a classe Produto}
+\begin{lstlisting}
+class Produto {
+    String descricao;
+    float preco;
+    int quant;
+    
+    boolean emEstoque()
+    {
+        return (quant > 0);
+    }
+    
+    void inicializaProduto(String d, float p, int q)
+    {
+        descricao = d;
+        preco = p;
+        quant = q;
+    }
+}
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]{Usando a classe Produto}
+\begin{lstlisting}
+class Aplicacao {
+    public static void main(String args[])
+    {
+        Produto p = new Produto();
+
+        p.descricao = "Shulambs";
+        p.preco = 1.99F;
+        p.quant = 200;
+    
+        System.out.println("Produto: " + p.descricao);
+        System.out.println("Preço: " + p.preco);
+        System.out.println("Estoque: " + p.quant);
+        
+        if (p.emEstoque())
+            System.out.println("Produto em estoque.");
+    }
+}
+\end{lstlisting}
+\end{frame}
+
+\subsection{Semântica de referência}
+
+\begin{frame}{Semântica de referência}
+\begin{itemize}
+    \item Conceito de referência:
+    \begin{itemize}
+        \item Uma referência é um ponteiro (apontador) constante.
+        \item Referências são chamadas de alias (sinônimos). \\[5mm]
+    \end{itemize}
+    \item Em Java, uma instância de uma classe é interpretada como uma referência para um objeto e não o objeto propriamente dito.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Criando Objetos: C++ vs Java}
+ C++:
+    \begin{itemize}
+        \item Declaração de um Objeto:
+        \begin{itemize}
+            \item \lstinline|nomeClasse nomeObjeto;|
+            \item Objeto é inicializado no momento da declaração e um estado lhe é atribuído.
+        \end{itemize}
+        \item Declaração de apontadores:
+        \begin{itemize}
+            \item \lstinline|nomeClasse *nomeObjeto;|
+            \item Cria-se o apontador mas não se cria o objeto.
+            \item Criação do objeto através da cláusula \lstinline|new|.
+            \item Apontador pode apontar para qualquer objeto.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Criando Objetos: C++ vs Java}
+Java:
+    \begin{itemize}
+        \item Declaração de um Objeto:
+        \begin{itemize}
+            \item \lstinline|nomeClasse nomeObjeto;|
+            \item Semelhante ao apontador no C++.
+            \item Cria-se a referência mas não se cria o objeto.
+            \item Criação do objeto através da cláusula \lstinline|new|.
+            \item Uma vez criado o objeto, a referência não pode ser manipulada numericamente.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Criando Objetos}
+\lstinline|Produto p;|
+    \begin{itemize}
+        \item Cria-se uma referência para um objeto do tipo \lstinline|Produto|, mas não se aloca a memória para armazenar o objeto.
+        \item Variável \lstinline|p| aponta para NADA (\lstinline|null|)
+    \end{itemize}
+\lstinline|p = new Produto();|
+    \begin{itemize}
+        \item Cria-se efetivamente o objeto \lstinline|Produto|.
+        \item Faz com que a referência \lstinline|p| aponte para \lstinline|Produto|.
+    \end{itemize}
+\end{frame}
+
+\section{Construtores}
+
+\begin{frame}{Construindo um objeto}
+    
+    \begin{itemize}
+        \item Objetos são instâncias de uma classe:
+        \begin{itemize}
+            \item Lê-se instância como sendo um elemento com o tipo da classe e um estado corrente individual.
+        \end{itemize}
+        \item Exemplo:
+        \begin{itemize}
+            \item Classe $\longrightarrow$ Produto (tipo com descricao, preco e quantidade)
+            \item Objeto de Produto  $\longrightarrow p = (Shulambs;  R\$1,99; 200)$
+        \end{itemize}
+        \item Ao criar um objeto sua memória é inicializada.
+        \item Se não for definido um modo de inicialização o compilador usa valores padrão. Ex:
+        \begin{itemize}
+            \item \lstinline|p = new Produto();| cria $(null, 0.0, 0)$
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\subsection{Construtores}
+
+\begin{frame}{Construtores}
+    \begin{itemize}
+        \item Construtores são usados para inicializar objetos com valores diferentes do padrão.
+        \item Construtores:
+        \begin{itemize}
+            \item Possuem o mesmo nome da classe.
+            \item Não possuem valores de retorno.
+        \end{itemize}
+        \item Uma classe pode ter de 0 a muitos construtores.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Construtores}
+    
+    \begin{itemize}
+        \item Razões para se usar construtores especializados:
+        \begin{itemize}
+            \item Algumas classes não possuem estado inicial aceitável sem parâmetros.
+            \item Fornecer um estado inicial é conveniente e aceitável quando da construção de alguns tipos de objetos.
+            \item Construir um objeto aos poucos pode ser desgastante de forma que pode ser conveniente que se tenha um estado inicial correto quando forem criados.
+            \item Um construtor que não é publico restringe quem irá criar objetos utilizando-o. Pode-se assim restringir o uso de sua classe.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\subsection{Usando construtores}
+
+    
+\begin{frame}[fragile]{Classe Produto: usando construtores}
+\begin{lstlisting}
+class Produto {
+    ...
+    
+    Produto(String d, float p, int q)
+    {
+        if (d.length() >= 3)
+            descricao = d;
+        if (p > 0)
+            preco = p;
+        if (q >= 0)
+            quant = q;
+    }
+    
+    Produto() {
+        descricao = "Novo Produto";
+        preco = 0.01F;
+        quant = 0; 
+    }
+}
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]{Usando construtores da classe Produto}
+\begin{lstlisting}
+class Aplicacao {
+    public static void main(String args[])
+    {
+        Produto p1 = new Produto();
+        
+        Produto p2 = new Produto("Shulambs", 1.99F, 200);
+        
+        System.out.println("Produto: " + p1.descricao);
+        System.out.println("Preço: " + p1.preco);
+        System.out.println("Estoque: " + p1.quant);
+        
+        System.out.println("Produto: " + p2.descricao);
+        System.out.println("Preço: " + p2.preco);
+        System.out.println("Estoque: " + p2.quant);
+        
+    }
+}
+\end{lstlisting}
+\end{frame}
+
+\end{document}

@@ -1,0 +1,495 @@
+\documentclass[handout]{beamer}
+
+\input{aulas-beamer-preamble}
+
+
+\title[Programação Modular]
+{%
+    Tratamento de exceções%
+}
+\author[Prof. Hugo de Paula]
+{
+    Prof.~Hugo~de~Paula
+}
+\institute[DCC / PUC Minas]
+{\epsfig{file=puclogo_small_bw,width=1.5cm} \\
+  \textsc{Pontifícia Universidade Católica de Minas Gerais}\\
+    Departamento de Ciência da Computação
+}
+\date[]{}
+
+\lstset{language=Java,
+   basicstyle=\scriptsize,
+   commentstyle=\color{red},
+   showstringspaces=false,
+   numbers=none,
+   numberstyle=\tiny}
+
+\begin{document}
+
+
+\selectlanguage{brazil}
+
+\begin{frame}
+   \titlepage
+\end{frame}
+
+
+\begin{frame}
+   \frametitle{Sumário}
+   \tableofcontents[pausesections]
+\end{frame}
+
+
+\addtobeamertemplate{frametitle}{}{%
+   \begin{textblock*}{10mm}(.9945\textwidth,-1.71cm)
+    \includegraphics[height=1cm]{puclogo_small_bw.pdf}
+   \end{textblock*}
+}
+
+\section{Princípios de McConnell}
+
+
+\begin{frame}{Protegendo seu programa de entradas inválidas}
+\begin{itemize}
+
+\item Antigo paradigma: \textit{``Garbage in, garbage out''} (lixo entra, lixo sai).
+    \begin{itemize}
+    \item Não é suficiente para um software de produção.
+    \item Programa nunca deve produzir lixo, independentemente da entrada.
+    \end{itemize}
+\item Novos paradigmas de proteção (\textit{\bf Princípios de McConnell}\footnote{MCCONNELL, Steve. \textit{Code complete: um guia prático para a construção de software}, 2005. Bookman.}):
+    \begin{itemize}
+    \item  \textit{``Garbage in, nothing out''} (lixo entra, nada sai).
+    \item  \textit{``Garbage in, error message out''} (lixo entra, mensagem de erro sai).
+    \item  \textit{``No garbage allowed in''} (nenhum lixo é permitido entrar).
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Princípios de McConnell}
+\begin{itemize}
+   \item \textbf{Verifique dados de todas as fontes externas.}
+   \begin{itemize}
+      \item Arquivos, usuários, rede...
+      \item Faixas de valores para tipos numéricos (int, float, ...); 
+      \item Formato de texto em Strings (comprimento, valores restritos, ...).
+   \end{itemize}
+   \item \textbf{Verifique parâmetros nas chamadas de métodos.}
+   \begin{itemize}
+      \item Semelhante ao anterior, mas dados vêm de outras rotinas. 
+      \item Evitar propagação de valores incorretos.
+      \item Testar o parâmetro dentro da função.
+    \end{itemize}
+   \item \textbf{Decida como tratar entradas com problema.}
+   \begin{itemize}
+      \item Detectado o parâmetro inválido, decida o que fazer.
+      \item Diferentes abordagens se adequam a diferentes situações.
+   \end{itemize}
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Robustez $\times$ corretude}
+
+\begin{itemize}
+\item Sempre é melhor ser totalmente robusto, certo?
+   \begin{itemize}
+   \item Manter o programa funcionando a qualquer custo.
+   \item Um editor de texto que se fecha caso você dê \textit{backspace} em um documento vazio.
+   \item Um visualizador de imagens que termina caso haja algum problema com uma foto digital.
+   \item Um MP3 player que para de funcionar se o arquivo não está completo
+   \end{itemize}
+   
+\item Nem sempre: um sistema de impressão de raio-X digital. Caso um valor esperado não seja encontrado\ldots Manter o sistema funcionando e deixar de imprimir?
+\end{itemize}
+\end{frame}
+
+
+\section{Tratamento de Exceções}
+
+
+\begin{frame}{Robustez}
+
+\begin{block}{Robustez}
+Habilidade do software em reagir apropriadamente a situações anormais.
+\end{block}
+
+\textbf{Programação por contrato.} \\[2mm]
+   \begin{itemize}
+   \item Método chamado:
+      \begin{itemize}
+          \item ou executa,
+          \item ou falha.
+      \end{itemize}
+   \item Falha: situação excepcional
+      \begin{itemize}
+          \item Tratamento varia com o tipo de erro.
+          \item Pode-se produzir uma \texttt{Exception} ou \texttt{Error} em Java.
+       \end{itemize}   
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Tratamento de Exceções}
+
+\begin{itemize}
+    \item Vantagens
+   \begin{itemize}
+   \item Separa tratamento do erro do código normal.
+   \item Propaga erros na pilha de chamada de funções.
+   \item Agrupa e diferencia tipos de erros.
+   \end{itemize}
+\item Modelo de programação:
+   \begin{itemize}
+   \item Em caso de situação anormal, programa lança (\texttt{throw}) uma exceção.
+   \item Bloco de comandos em que a exceção foi lançada tem duas opções:
+   \begin{itemize}
+       \item Capturar (\texttt{catch}) e tratar a exceção.
+       \item Propagar a exceção para o bloco que o chamou (\texttt{throws}).
+    \end{itemize}
+    \item Finalmente (\texttt{finally}) executa código invariante, que deve ser executado independentemente se a execução foi bem sucedida ou se houve exceção.
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Código sujo: sem exceções}
+
+\begin{lstlisting}
+int LeArquivo {
+    int codigoErro = 0;
+    AbraArquivo();
+    if (ArquivoFoiAberto) {
+       ObtenhaTamanhoArquivo();
+       if (TamanhoFoiObtido) {
+          AloqueMemoria();
+          if (MemoriafoiAlocada) {
+             LeArquivoNaMemoria();
+             if (LeituraFalhou) { codigoErro = -1; }
+          } else {  codigoErro = -2; }
+       } else {  codigoErro = -3;
+       }
+       FecheArquivo();
+       if (ArquivoNaoFechou && errorCode == 0) {
+          codigoErro = -4;
+       } else { codigoErro = codigoErro and -4; 
+       }
+    } else { codigoErro = -5; }
+    return codigoErro;
+} 
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]{Código limpo: com exceções}
+
+
+\begin{lstlisting}
+LeArquivo {
+    try {
+      AbraArquivo;
+      ObtenhaTamanhoArquivo;
+      AloqueMemoria;
+      LeArquivoNaMemoria;
+      FecheArquivo;
+    } catch (FalhaAberturaArquivo) {
+         FaçaAlgumaCoisa;
+    } catch (FalhaObtencaoTamanhoArquivo) {
+         FacaAlgumaCoisa;
+    } catch (FalhaAlocacaoMemoria) {
+         FacaAlgumaCoisa;
+    } catch (FalhaLeArquivo) {
+         FacaAlgumaCoisa;
+    } catch (FalhaFechamentoArquivo) {
+         FacaAlgumaCoisa;
+    }
+}
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}{Hierarquia de exceções em Java}
+
+\begin{itemize}
+\item \textit{Checked Exceptions}
+   \begin{itemize}
+   \item Não descendem de \texttt{RuntimeException}
+   \end{itemize}
+\item \textit{Unchecked Exceptions}
+   \begin{itemize}
+   \item Descendem de \texttt{RuntimeException}
+   \end{itemize}
+\item Compilador verifica as \textit{Checked Exceptions}
+\item Programador tem duas alternativas
+   \begin{itemize}
+   \item Trata a exceção (\texttt{try/catch})
+   \item Delega a exceção (\texttt{throws})
+    \end{itemize}
+    \item A classe \texttt{Trowable} é a raiz da hierarquia de classes de exceções.
+    \item A classe \texttt{Exception} é uma extensão de \texttt{Trowable}. Normalmente novas exceções estendem de \texttt{Exception}.
+    \item Classe \texttt{Exception} possui apenas uma \texttt{String} para armazenar a mensagem de erro de uma exceção.
+    
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Tratamento de Exceções em Java}
+
+Quatro passos devem ser aprendidos:
+\begin{itemize}
+\item Como criar sua própria exceção?
+\item Como lançar uma exceção?
+\item Como propagar uma exceção?
+\item Como capturar e tratar uma exceção?
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{Criando Tipos de Exceções}
+
+\begin{itemize}
+\item Exceção deve estender \texttt{Exception}. \\[2mm]
+\end{itemize}
+
+Por exemplo: \\
+
+\begin{lstlisting}
+public class ExcecaoListaCheia extends Exception { 
+   public ExcecaoListaCheia() {
+      super("A lista está cheia.");
+   }
+}
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]{Lançando uma exceção}
+
+\begin{itemize}
+    \item Exceções são lançadas pela cláusula \texttt{throw}. \\[2mm]
+\end{itemize}
+
+Por exemplo: \\
+
+\begin{lstlisting}
+public void adicionar(Object o) {
+   if (this.tamanho() == MAX)
+       throw new ExcecaoListaCheia();
+}
+\end{lstlisting}
+
+\begin{itemize}
+\item A cláusula \texttt{throws}.
+   \begin{itemize}
+   \item Métodos devem declarar qual tipo de exceção ele pode lançar.
+   \item Pode-se usar uma lista de exceções separadas por vírgula.
+   \item Só é possível se lançar uma exceção se esta foi previamente declarada na cláusula \texttt{throws}.
+   \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Fluxo de execução de código}
+
+\begin{lstlisting}
+void método() {
+   try {
+      código 1;
+      
+      // ----------- excecao EX lançada ---------------
+      
+      código 2; // não será executado.
+   } catch {EX e) {
+      código 3; // irá capturar a exceção EX.
+   } finally {
+      código 4; // será sempre executado.
+   }
+   código 5; // não será executado, caso seja lançada uma exceção  inesperada que não esteja sendo tratada por um bloco catch.
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Tratando exceções}
+
+\begin{itemize}
+\item O corpo de \texttt{try} é executado até uma exceção ser lançada ou até finalizar com sucesso.
+\item Caso ocorra uma exceção a cláusula \texttt{catch} que trata aquele tipo de exceção é executada.
+\item Se houver cláusula \texttt{finally}, seu código será executado no final de tudo.
+\item Cláusulas \texttt{finally} são executadas com ou sem a ocorrência de exceções.
+   \begin{itemize}
+   \item São especialmente úteis para atividades de limpeza.
+   \end{itemize}
+\end{itemize}
+\end{frame}
+
+\subsection{Exemplo: Exceção de estoque}
+
+
+\begin{frame}[fragile]{Exemplo: Exceção de estoque}
+
+\begin{lstlisting}
+public class ExcecaoEstoqueExcedido extends Exception {
+   private int quant;
+   
+   public int getQuant() {
+      return quant;
+   }
+   
+   public ExcecaoEstoqueExcedido(int quant, int max) {
+      super("O estoque de " + quant + " excedeu o limite de "
+            + max + ".");
+      this.quant = quant;
+   }
+}
+
+public class ExcecaoEstoqueNegativo extends Exception {
+   
+   public ExcecaoEstoqueNegativo() {
+      super("O estoque deve possuir um valor positivo.");
+   }
+}
+\end{lstlisting}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Exemplo: Exceção de estoque}
+
+\begin{lstlisting}
+public class Produto {
+    ...
+   public void setQuant(int q) throws ExcecaoEstoqueNegativo,
+                                      ExcecaoEstoqueExcedido {
+      if (q < 0)
+         throw new ExcecaoEstoqueNegativo();
+      else if (q > MAX_ESTOQUE)
+         throw new ExcecaoEstoqueExcedido(q, Produto.MAX_ESTOQUE);
+      else quant = q;
+   }
+   ...
+   public Produto(String d, float p, int q, LocalDateTime f)  throws  
+                   ExcecaoEstoqueNegativo, ExcecaoEstoqueExcedido {
+     setDescricao(d);
+     setPreco(p);
+     setQuant(q);
+     setDataFabricacao(f);
+     id = ++cont;
+     instancias++;
+  }
+}
+\end{lstlisting}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Exemplo: Exceção de estoque}
+
+\begin{lstlisting}[basicstyle=\tiny]
+public class BemDuravel extends Produto {
+   ...
+.   public BemDuravel(String d, float p, int q, LocalDateTime f, int g) 
+                   throws ExcecaoEstoqueNegativo, ExcecaoEstoqueExcedido {
+      super(d, p, q, f);
+      setMesesGarantia(g);
+   }
+}
+
+public class BemDeConsumo extends Produto {
+   ...
+   public BemDeConsumo(String d, float p, int q, LocalDateTime f, LocalDate v)
+                       throws ExcecaoEstoqueNegativo, ExcecaoEstoqueExcedido  {
+      super(d, p, q, f);
+      setDataValidade(v);
+   }
+}
+\end{lstlisting}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Exemplo: Exceção de estoque}
+
+\begin{lstlisting}[basicstyle=\tiny]
+´public class Aplicacao {}
+   public static void main(String args[]) {
+      try {
+         Estoque estoque = new Estoque();
+
+         adicionarProduto(estoque);
+         adicionarProduto(estoque);
+         ...
+         estoque.adicionar(
+            new BemDeConsumo("Leite", 4.00F, 120, 
+                LocalDateTime.now(), LocalDate.now().plusMonths(6)));
+         ...
+         p.setQuant(p.getQuant() + 200);
+
+         ...
+      } catch (ExcecaoEstoqueExcedido e) {
+         JOptionPane.showMessageDialog(null, e.getMessage(), "Erro de estoque excedido",
+                                       JOptionPane.ERROR_MESSAGE);
+         e.printStackTrace();
+      } catch (ExcecaoEstoqueNegativo e) {
+         JOptionPane.showMessageDialog(null, e.getMessage(), "Erro de estoque negativo",
+                                       JOptionPane.ERROR_MESSAGE);
+         e.printStackTrace();
+      } finally {
+         System.out.println("Sempre executado.");
+      }
+  }
+}
+\end{lstlisting}
+\end{frame}
+
+
+
+
+
+
+
+
+
+
+
+\begin{frame}{Aspectos de desempenho}
+\begin{itemize}
+\item Exceções devem ser evitadas em casos de erro esperados: fim de arquivo, por exemplo.
+\item Exceções são úteis quando dados de entrada não podem ser completamente verificados.
+\item Exceções são úteis quando não se sabe o que fazer quando um erro é detectado: se dados inválidos, o que fazer? Inicializar com valores padrão?
+\item Boa prática de programação: se seu método é capaz de tratar uma exceção, então trate-a, ao invés de passar a exceção. Aumenta legibilidade.
+\item Dica de desempenho: se um erro pode ser processado localmente, trate-o, ao invés de lançar uma exceção. Exceções são caras, se comparadas ao processamento local.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{\textit{Multi-catch}}
+
+\begin{itemize}
+\item Permite que dois tipos de exceção sejam capturados pela mesma instrução \lstinline|catch|.
+\end{itemize}
+
+\begin{lstlisting}[basicstyle=\tiny]
+class MultiCatch {
+  public static void main(String args[]) {
+    int a = 88, b = 0;
+    int result;
+    char chrs[] = { 'A', 'B', 'C' };
+    
+    for(int i = 0; i < 2; i++) {
+       try {
+          if(i == 0)  
+             result = a / b;     // gera uma ArithmeticException  
+          else
+             chrs[5] = 'X';      // gera uma ArrayIndexOutOfBoundsException
+
+       // Captura ambas as exceções.
+       } catch(ArithmeticException | ArrayIndexOutOfBoundsException e) {
+          System.out.println("Excecao capturada: " + e);
+       }
+    }
+    System.out.println("Apos multi-catch.");
+  }
+}
+\end{lstlisting}
+
+\end{frame}
+
+\end{document}

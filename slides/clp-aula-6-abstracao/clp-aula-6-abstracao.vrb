@@ -1,0 +1,24 @@
+\frametitle{Exemplo de co-rotinas}
+\begin{block}{Exemplo em Python}
+    \begin{lstlisting}[language=Python,numbers=none]
+def rangeOnDemand(st, to):
+  i = st
+  while (i < to):
+    yield i
+    i += 1 # (resume) Próxima execução continua deste ponto
+
+for i in rangeOnDemand(1, 5):
+  print("{0}a exec de randOnDemand".format(i))
+\end{lstlisting}
+\end{block}
+
+\begin{block}{Saída}
+\scriptsize
+\begin{verbatim}
+1a exec de randOnDemand
+2a exec de randOnDemand
+3a exec de randOnDemand
+4a exec de randOnDemand
+\end{verbatim}
+\end{block}
+

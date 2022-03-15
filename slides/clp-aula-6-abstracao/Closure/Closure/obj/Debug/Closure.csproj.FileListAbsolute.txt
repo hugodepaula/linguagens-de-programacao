@@ -1,0 +1,6 @@
+C:\Users\Hugo\Dropbox\PUC\Disciplinas\CLP\Material\Slides\clp-aula-9-abstracao\Closure\Closure\bin\Debug\Closure.exe.config
+C:\Users\Hugo\Dropbox\PUC\Disciplinas\CLP\Material\Slides\clp-aula-9-abstracao\Closure\Closure\bin\Debug\Closure.exe
+C:\Users\Hugo\Dropbox\PUC\Disciplinas\CLP\Material\Slides\clp-aula-9-abstracao\Closure\Closure\bin\Debug\Closure.pdb
+C:\Users\Hugo\Dropbox\PUC\Disciplinas\CLP\Material\Slides\clp-aula-9-abstracao\Closure\Closure\obj\Debug\Closure.csprojResolveAssemblyReference.cache
+C:\Users\Hugo\Dropbox\PUC\Disciplinas\CLP\Material\Slides\clp-aula-9-abstracao\Closure\Closure\obj\Debug\Closure.exe
+C:\Users\Hugo\Dropbox\PUC\Disciplinas\CLP\Material\Slides\clp-aula-9-abstracao\Closure\Closure\obj\Debug\Closure.pdb

@@ -1,0 +1,13 @@
+\frametitle{Gramáticas de atributos}
+\begin{block}{Exemplo de gramática de atributos (cont)}\footnotesize
+		\begin{verbatim}
+<expr>.expected_type <- inherited from parent
+
+<var>[1].actual_type <- lookup (A)
+<var>[2].actual_type <- lookup (B)
+<var>[1].actual_type =? <var>[2].actual_type
+
+<expr>.actual_type <- <var>[1].actual_type
+<expr>.actual_type =? <expr>.expected_type
+		\end{verbatim}\footnote{SEBESTA (2019). \textit{Conceitos de Linguagens de Programação. 11ed}}
+	\end{block}

@@ -1,0 +1,8 @@
+\select@language {brazil}
+\select@language {brazil}
+\beamer@sectionintoc {1}{Estilos de Computa\c c\~ao}{3}{0}{1}
+\beamer@subsectionintoc {1}{1}{Determinismo e n\~ao-determinismo}{4}{0}{1}
+\beamer@sectionintoc {2}{Estruturas de controle}{5}{0}{2}
+\beamer@subsectionintoc {2}{1}{Instru\c c\~oes de sele\c c\~ao}{6}{0}{2}
+\beamer@subsectionintoc {2}{2}{Instru\c c\~oes iterativas}{19}{0}{2}
+\beamer@sectionintoc {3}{Entrada/sa\IeC {\'\i }da}{31}{0}{3}

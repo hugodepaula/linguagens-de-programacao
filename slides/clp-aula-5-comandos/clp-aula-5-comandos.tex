@@ -1,0 +1,728 @@
+\documentclass[handout]{beamer}
+
+\usetheme{Warsaw}
+
+\usepackage[brazil]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{times}
+\usepackage[T1]{fontenc}
+\usepackage{epsfig}
+\usepackage{listings}
+\usepackage{tikz}
+
+
+%\usepackage{dcolumn}
+%\newcolumntype{.}{D{.}{.}{-1}}
+%\newcolumntype{d}[1]{D{.}{.}{#1}}
+%\usetheme{Berkeley}
+
+\title[Conceitos de Linguagens de Programação]
+{%
+	Comandos e estruturas de controle%
+}
+\author[Prof. Hugo de Paula]
+{
+	Prof.~Hugo~de~Paula
+}
+\institute[DCC / PUC Minas]
+{\epsfig{file=puclogo_small_bw,width=1.5cm} \\
+	\textsc{Pontifícia Universidade Católica de Minas Gerais}\\
+	Departamento de Ciência da Computação
+}
+\date[]{}
+
+\lstset{language=Java,
+        basicstyle=\scriptsize,
+        commentstyle=\color{red},
+        showstringspaces=false,
+        numbers=left,
+        numberstyle=\tiny}
+
+
+\begin{document}
+
+\selectlanguage{brazil}
+
+
+
+\begin{frame}
+   \titlepage
+\end{frame}
+
+\addtobeamertemplate{frametitle}{}{%
+	\begin{tikzpicture}[remember picture,overlay]
+	\node[anchor=north east,yshift=3pt,xshift=3pt] at (current page.north east) {\epsfig{file=puclogo_small_bw,width=1cm}};
+	\end{tikzpicture}}
+
+
+\begin{frame}
+   \frametitle{Sumário}
+   \tableofcontents[pausesections]
+\end{frame}
+
+%\AtBeginSection[] % Do nothing for \section*
+%{
+%
+%\begin{frame}<beamer>
+%\frametitle{Outline}
+%\tableofcontents[currentsection]
+%\end{frame}}
+
+
+\section{Estilos de Computação}
+
+\begin{frame}{Colateralidade}
+   \begin{itemize}
+   \item Comandos sequenciais:  C1;  C2;
+   \item Comandos colaterais:
+      \begin{itemize}
+      \item C1, C2   são executados, sem uma ordem.
+      \item Disponíveis nas linguagens concorrentes
+      \item \lstinline[language=Pascal]!n := 7!, \; \; \lstinline[language=Pascal]!n :=  n + 1;! \;  suponha  n = 0
+         \begin{itemize}
+         \item C1 seguido de C2    ->  \textbf{n = 8}
+         \item C2 seguido de C1    ->  \textbf{n = 7}
+         \item C1 avaliado entre \textbf{n+1} e sua atribuição a  \textbf{n}  ->   \textbf{n = 1}
+         \end{itemize}
+      \end{itemize}
+   \end{itemize}
+\end{frame}
+
+\subsection{Determinismo e não-determinismo}
+
+\begin{frame}[fragile]{Estilos de computação}
+  \begin{itemize}
+   \item Computação determinista.
+      \begin{itemize}
+      \item determina-se \textit{a priori} a sequencia de comandos que serão executados
+      \end{itemize}
+   \item Computação não-determinista.
+      \begin{itemize}
+      \item Não determina \textit{a priori} a ordem de execução dos comandos.
+      \item Computação efetivamente determinista.
+         \begin{itemize}
+         \item não determinista, tem efeito previsível
+         \end{itemize}
+      \end{itemize}
+   \item Comandos colaterais 
+      \begin{itemize}
+      \item não deterministas
+      \item efetivamente determinista 
+         \begin{itemize}
+         \item nenhum comando inspeciona variáveis atualizadas por outro
+         \end{itemize}
+      \item \lstinline[language=Pascal]!m := 10!,  \lstinline[language=Pascal]!write( m );!
+      \item \lstinline[language=Pascal]!m := m + 1!, \lstinline[language=Pascal]!n := n + 2;!
+      \end{itemize}
+   \end{itemize}
+\end{frame}
+
+\section{Estruturas de controle}
+
+\begin{frame}{Estruturas de controle}
+
+\begin{block}{Estrutura de controle}
+Uma estrutura de controle é uma instrução de controle e os comandos que ela controla.
+\end{block}
+
+Questões de projeto:
+\begin{itemize}
+    \item Uma estrutura de controle pode ter múltiplas entradas?
+\end{itemize}
+
+\end{frame}
+
+\subsection{Instruções de seleção}
+
+\begin{frame}{Estruturas de seleção}
+
+\begin{block}{Instrução de seleção}
+    Provê os meios para se escolher entre dois ou mais caminhos de execução.
+\end{block}
+
+\begin{itemize}
+    \item Estruturas podem ser de \textbf{dois caminhos} (\textit{two-way}) ou de \textbf{múltiplos caminhos} (\textit{multiple-way}).
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Seleção de dois caminhos}
+
+\begin{itemize}
+    \item Escolha de sub-comandos (condicionais): SE (\lstinline[language=Pascal]!if!).
+\end{itemize}
+
+\begin{block}{Forma geral da estrutura condicional de dois caminhos}
+    \scriptsize
+    \centering
+    \begin{verbatim}
+    SE <expressão_de_controle>
+    ENTÃO <cláusula>
+    SENÃO <cláusula>
+    \end{verbatim}
+\end{block}	
+
+\begin{itemize}
+    \item Comando condicional produz computação não determinista.
+\end{itemize}
+
+\begin{block}{Exemplo em PASCAL}
+    \scriptsize
+    \centering
+    \begin{lstlisting}[language=Pascal,numbers=none]
+    if  (x >= y)  
+    then max := x
+    else max := y        
+    \end{lstlisting}
+\end{block}	
+\end{frame}
+
+
+\begin{frame}{Seleção de dois caminhos: projeto}
+
+\begin{itemize}
+    \item Qual o tipo e formato da expressão de controle?
+    \item Como as instruções ``ENTÃO'' E ``SENÃO'' são especificadas?
+    \item Qual deve ser o significado de seletores aninhados?
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Seleção de dois caminhos: Expressão de controle}
+
+\begin{itemize}
+    \item Se linguagem não possui palavra reservada para a cláusula ``ENTÃO'', expressão de controle vem entre parêntesis.
+    \item Linguagens como o C99, Python e C++, expressão de controle pode ser aritmética.
+    \item Na maioria das linguagens, expressão de controle deve ser \textbf{boolean}.
+    \item Cláusulas podem ser simples ou blocos de comandos.
+\end{itemize}
+
+
+\end{frame}
+
+\begin{frame}[fragile]{Seleção de dois caminhos: Expressão de controle}
+
+\begin{itemize}
+    \item Python utiliza indentação para definir cláusulas:
+\end{itemize}
+
+\begin{block}{Exemplo em Python}
+    \scriptsize
+    \centering
+    \begin{lstlisting}[language=Python,numbers=none]
+    if  x > y:
+        print("X é maior que Y")
+        x = y
+    else:
+        print("X não é maior que Y")
+    \end{lstlisting}
+\end{block}	
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Seleção de dois caminhos aninhada}
+
+\begin{block}{Exemplo em Java}
+    \scriptsize
+    \centering
+    \begin{lstlisting}[language=Java,numbers=none]
+    if  (soma == 0)
+        if (contador == 0)
+            resultado = 0;
+    else resultado = 1;
+    \end{lstlisting}
+\end{block}	
+
+\begin{itemize}
+    \item A qual instrução do \lstinline[language=Java]!if! o comando \lstinline[language=Java]!else! está relacionado?
+    \item Java utiliza regra semântica estática: \lstinline[language=Java]!else! está sempre casado com o \lstinline[language=Java]!if! mais próximo.
+    \item Usar chaves para alternar a semântica: C, C++ e C\#.
+\end{itemize}
+
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Seleção de dois caminhos aninhada}
+
+\begin{block}{Exemplo em Java}
+    \scriptsize
+    \centering
+    \begin{lstlisting}[language=Java,numbers=none]
+    if  (soma == 0) {
+        if (contador == 0)
+            resultado = 0;
+    } 
+    else resultado = 1;
+    \end{lstlisting}
+\end{block}	
+
+\begin{block}{Exemplo em Python}
+    \scriptsize
+    \centering
+    \begin{lstlisting}[language=Python,numbers=none]
+    if  soma == 0:
+        if contador == 0:
+            resultado = 0
+    else:
+        resultado = 1
+    \end{lstlisting}
+\end{block}	
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Expressões seletoras}
+\begin{itemize}
+    \item Em linguagens funcionais, como o Lisp e F\#, seletor é uma expressão.
+\end{itemize}
+
+
+\begin{block}{Exemplo em Lisp}
+    \scriptsize
+    \centering
+    \begin{lstlisting}[language=Lisp,numbers=none]
+    let y = if x > 0 then x else 2 * x
+    \end{lstlisting}
+\end{block}	
+
+\begin{itemize}
+    \item Se expressão \lstinline[language=Java]!if! produz valor, então deve haver uma cláusula \lstinline[language=Java]!else!.
+    \item Tipos dos valores retornados deve ser o mesmo.
+\end{itemize}
+
+
+\begin{block}{Operador ternário condicional em C}
+    \scriptsize
+    \centering
+    \begin{lstlisting}[language=C,numbers=none]
+    y = (x > 0) ? x : 2 * x;
+    \end{lstlisting}
+\end{block}	
+
+
+\end{frame}
+
+
+\begin{frame}{Seleção de múltiplos caminhos}
+\begin{itemize}
+    \item Permite a seleção de um dentre várias cláusulas ou blocos de comando.
+    \item Questões de projeto:
+    \begin{enumerate}
+        \item Qual o tipo e formato da expressão de controle?
+        \item Como os segmentos selecionáveis são especificados?
+        \item O fluxo está condicionado à execução de apenas um segmento?
+        \item Como os valores de cada caso são especificados?
+        \item O que é feito para valores não representados?
+    \end{enumerate}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Seleção de múltiplos caminhos: exemplos}
+
+\begin{block}{Exemplo em Java, C, C++, JavaScript}
+    \scriptsize
+    \centering
+    \begin{lstlisting}[language=Java,numbers=none]
+    switch (expressao_de_controle) {
+        case expressao_constante_1: instruções_1;
+        ...
+        case expressao_constante_n: instruções_n;
+        [default: instrucoes_n+1]
+    }
+    \end{lstlisting}
+\end{block}	
+
+\end{frame}
+
+
+\begin{frame}{Seleção de múltiplos caminhos: projeto}
+\begin{itemize}
+    \item Decisões de projeto da linguagem C:
+    \begin{enumerate}
+        \item Expressões de controle só podem ser de tipos inteiros.
+        \item Segmentos selecionáveis podem ser sequências de comandos, blocos de comandos ou instruções compostas.
+        \item Qualquer número de segmentos pode ser executado em um determinado momento (não há fim de segmento implícito).
+        \item Cláusula \textbf{default} usada para valores não representados.
+    \end{enumerate}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Seleção de múltiplos caminhos: projeto}
+\begin{itemize}
+    \item Decisões de projeto da linguagem C\#:
+    \begin{enumerate}
+        \item Regra semântica estática não permite a execução implícita de mais de um segmento.
+        \item Cada segmento selecionável deve terminar com um salto não condicional (\lstinline|goto| ou \lstinline|break|).
+        \item Em C\# a expressão de controle e as constantes das cláusulas \lstinline|case| podem ser strings.
+    \end{enumerate}
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Seleção de múltiplos caminhos com \textbf{if}}
+
+
+\begin{block}{Exemplo em Python}
+    \scriptsize
+    \centering
+    \begin{lstlisting}[language=Python,numbers=none]
+    if  contador < 10:
+        resultado = 0
+    elif contador < 100:
+        resultado = 1
+    elif contador < 1000:
+        resultado = 2
+    \end{lstlisting}
+\end{block}	
+
+\begin{block}{Exemplo em Ruby}
+    \scriptsize
+    \centering
+    \begin{lstlisting}[language=Ruby,numbers=none]
+    case
+        when contador < 10 then  resultado = 0
+        when contador < 100 then  resultado = 1
+        when contador < 1000 then  resultado = 2
+    \end{lstlisting}
+\end{block}	
+\end{frame}
+
+
+\subsection{Instruções iterativas}
+
+\begin{frame}[fragile]{Comandos iterativos}
+
+\begin{block}{Estruturas de repetição}
+    Repetição pode ser alcançada com iteração ou com recursividade.
+\end{block}
+
+\begin{itemize}
+    \item Comandos iterativos: Composto por um corpo e uma construção que determina o ponto de parada (ponto de controle).
+\end{itemize}
+
+
+\end{frame}
+
+
+
+
+
+\begin{frame}[fragile]{Comandos iterativos}
+
+\begin{itemize}
+	\item Indefinidos (ponto de controle baseado em lógica):
+\end{itemize}
+
+\begin{block}{}
+	\scriptsize
+	\centering
+	\begin{lstlisting}[language=Pascal,numbers=none]
+	while not eof(f) do
+	begin
+		read( f, ch );    write( ch );    
+	end
+	\end{lstlisting}
+\end{block}	
+
+\begin{itemize}
+	\item Definidos (ponto de controle baseado em contadores):
+\end{itemize}
+
+\begin{block}{}
+	\scriptsize
+	\centering
+	\begin{lstlisting}[language=Pascal,numbers=none]
+	for i  :=  1  to  10   do
+		write( i );
+	\end{lstlisting}
+\end{block}	
+
+
+\end{frame}
+
+
+
+
+
+
+\begin{frame}{Loops controlados por contadores}
+
+\begin{block}{}
+    Ponto de controle definido por uma variável, em que se especifica: valor inicial, valor final e tamanho do passo.
+\end{block}
+
+\begin{itemize}
+\item \textbf{Perguntas}
+\begin{enumerate}
+    \item Qual o tipo e escopo da variável de controle do loop?
+    \item Qual o valor da variável de controle após o loop? 
+    \item É permitido mudar o valor da variável dentro do loop?
+    \item Qual o valor da mesma se forçarmos a saída?  
+    \item Os parâmetros do loop devem ser avaliados apenas uma vez ou a cada iteração?
+\end{enumerate}
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Loops controlados por contadores: exemplos}
+
+\begin{block}{Exemplo em C}
+    \scriptsize
+    \centering
+    \begin{lstlisting}[language=C, numbers=none]
+    for ([expr_1] ; [expr_2] ; [expr_3]) comandos|
+    \end{lstlisting}
+\end{block}
+
+\begin{itemize}
+    \item Linguagens baseadas no C:
+    \begin{itemize}
+        \item As expressões podem ser instruções completas, ou mesmo sequências de instruções (separados por vírgula).
+        \item O valor de uma expressão com múltiplas instruções é o valor da última instrução.
+        \item Não há definição explícita de variável de loop.
+        \item Tudo pode ser alterado dentro do loop.
+        \item Primeira expressão é avaliada apenas uma vez, mas demais são avaliadas a cada iteração.
+    \end{itemize}
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}{Loops controlados por contadores: exemplos}
+\begin{itemize}
+\item C++ difere do C em:
+	\begin{itemize}
+		\item Expressão de controle também pode ser \textbf{boolean}.
+		\item Expressão inicial também pode incluir definição de variáveis (escopo é o bloco do corpo do loop).
+	\end{itemize}
+\item Java e C\#:
+	\begin{itemize}
+		\item Expressão de controle deve ser \textbf{boolean}.
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Loops controlados por contadores: exemplos}
+
+\begin{block}{Exemplo em Python}
+    \scriptsize
+    \centering
+    \begin{lstlisting}[language=Python,numbers=none]
+    for variavel_do_loop in object:
+        corpo do loop
+    [else:
+        clausula do else]
+    \end{lstlisting}
+\end{block}	
+
+\begin{itemize}
+    \item Variável é normalmente um objeto do tipo \lstinline[language=Python]|range|, que representa uma lista de valores ou uma chamada à função \lstinline[language=Python]|range|. Ex.: \\[2mm]
+    
+    \lstinline[language=Python]|range(5)| retorna \lstinline[language=Python]|0, 1, 2, 3, 4|.
+    
+    \item A variável do loop recebe os valores de  \lstinline[language=Python]|range| a cada iteração.
+    
+    \item Cláusula  \lstinline[language=Python]|else| é opcional é executada se o loop termina normalmente.
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Exemplo em Pascal}
+
+\begin{block}{}
+\scriptsize
+\centering
+\begin{lstlisting}[language=Pascal,numbers=none]
+    for i :=  1  to  10  do  
+        write ( i );
+    write ( i );     
+\end{lstlisting}
+\end{block}	
+
+\begin{itemize}
+\item saída final:   10
+\end{itemize}
+
+\begin{block}{}
+\scriptsize
+\centering
+\begin{lstlisting}[language=Pascal,numbers=none]
+    for  i := 1  to 10  do
+    begin        
+        i  :=  i * 2;	 { *  }
+        write ( i );     { ** }
+    end;
+\end{lstlisting}
+\end{block}	
+
+\begin{itemize}
+\item *)  i =  1     **)  i = 2
+\item *)  i =  3     **)  i = 6
+\item *)  i =  7     **)  i = 14       \textbf{loop infinito}
+\end{itemize}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]{Loops controlados por lógica}
+
+\begin{itemize}
+    \item Ponto de controle baseado em uma expressão \textbf{boolean}
+    
+    \item Perguntas:
+    \begin{itemize}
+        \item Pré-teste ou pós teste?
+    \end{itemize}
+
+    \item Linguagens baseadas em C possuem ambas as formas:
+\end{itemize}
+
+\begin{block}{Pré-teste}
+    \scriptsize
+    \centering
+\begin{lstlisting}[language=C,numbers=none]
+    while (expressao_de_controle)
+        corpo do loop
+\end{lstlisting}
+\end{block}
+
+\begin{block}{Pós-teste}
+    \scriptsize
+    \centering
+    \begin{lstlisting}[language=C,numbers=none]
+    do
+        corpo do loop
+    while (expressao_de_controle);
+    \end{lstlisting}
+\end{block}
+
+\end{frame}
+
+
+\begin{frame}{Mecanismos de controle de loops}
+\begin{itemize}
+    \item Conveniente permitir ao programador controlar o loop dentro do corpo do loop.
+    \item Saídas: \lstinline[language=C]|break| e  \lstinline[language=C]|continue| 
+    \begin{itemize}
+        \item Problema: loops aninhados.
+    \end{itemize}
+    \item C, C++, Python, Ruby e C\# possuem saídas não rotuladas.
+    \item Java e Perl possuem versões rotuladas das saídas.
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Iteração baseada em estruturas de dados}
+
+\begin{itemize}
+    \item O numero de elementos na estrutura de dados controla a iteração no loop.
+    \item Mecanismos de controle é uma chamada a uma função \textit{iterator} que retorna o próximo elemento em uma ordem predeterminada.
+\end{itemize}
+
+\begin{block}{Exemplo em Java}
+    \scriptsize
+    \centering
+    \begin{lstlisting}[language=Java,numbers=none]
+    Iterator<?> it = list.iterator();
+    while(it.hasNext())
+        if (!cond(it.next())) 
+            it.remove();
+    
+    for (String meuElemento : minhaLista) { ... }
+    \end{lstlisting}
+\end{block}	
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Iteração baseada em estruturas de dados}
+
+\begin{itemize}
+    \item C\# e F\# possuem classes genéricas que podem ser iteradas com o comando \lstinline[language={[Sharp]C}]|foreach|
+    \item \textit{Collections} que implementam a interface \texttt{IEnumerator} pode usar  \lstinline[language={[Sharp]C}]|foreach|.
+\end{itemize}
+
+\begin{block}{Exemplo em C\#}
+    \scriptsize
+    \centering
+    \begin{lstlisting}[language={[Sharp]C},numbers=none]
+    List<String> nomes = new List<String>();
+    nomes.Add("Joao");
+    nomes.Add("Ana");
+    nomes.Add("Maria");	
+    foreach (Strings nome in nomes)
+        Console.WriteLine("Nome: {0}", nome);
+    \end{lstlisting}
+\end{block}	
+
+\end{frame}
+
+
+
+\begin{frame}{Chamadas de procedimento}
+
+\begin{itemize}
+   \item Chamadas  a  procedimentos:   \emph{P ( A1, A2, A3 ... An )}
+      \begin{itemize}
+      \item aplicar uma abstração  dado  os argumentos
+      \end{itemize}
+   \item Parâmetro real
+      \begin{itemize}
+      \item se \textbf{expressão}  implica num argumento  \textbf{valor} 
+      \item se \textbf{acesso a variável} implica uma \textbf{referência a variável}
+      \end{itemize}
+  \item Altera o fluxo do programa para o código da função.
+  \item Estrutura de controle determinista (sempre chama o procedimento).
+  \item Saída pode ser não determinista (múltiplos \textbf{return}).
+\end{itemize}
+\end{frame}
+
+\section{Entrada/saída}
+
+
+\begin{frame}{Comandos de entrada/saída}
+
+\begin{itemize}
+    \item Associação (\textit{binding}): \textit{open}, \textit{close}.
+    \item Acesso: sequencial ou aleatório.
+    \item \textit{Stream} (fluxo contínuo) $\times$ registros de tamanho fixo.
+    \item Codificação: textual $\times$ binário.
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{Arquivos}
+\begin{itemize}
+    \item Arquivos padrões:
+    \begin{itemize}
+        \item Unix: stdin, stdout, stderr
+        \item C: stdin, stdout, stderr
+        \item C++: cin, cout, cerr
+        \item Java: System.in, System.out, System.err
+    \end{itemize}
+    \item \textit{Input/Output streams (em Java)}
+    \begin{itemize}
+        \item file, pipe, memory, url
+        \item filter
+        \item reader, writer
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\end{document}

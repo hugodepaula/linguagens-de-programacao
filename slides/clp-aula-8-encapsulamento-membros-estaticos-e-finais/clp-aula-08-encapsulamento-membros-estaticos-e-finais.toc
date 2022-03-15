@@ -1,0 +1,11 @@
+\beamer@endinputifotherversion {3.36pt}
+\select@language {brazil}
+\select@language {brazil}
+\beamer@sectionintoc {1}{Encapsulamento}{3}{0}{1}
+\beamer@subsectionintoc {1}{1}{Modificadores de acesso}{4}{0}{1}
+\beamer@subsectionintoc {1}{2}{Classe Produto: encapsulamento}{6}{0}{1}
+\beamer@subsectionintoc {1}{3}{M\'etodos de acesso}{7}{0}{1}
+\beamer@sectionintoc {2}{Membros est\'aticos}{11}{0}{2}
+\beamer@subsectionintoc {2}{1}{Exemplo: Identificador de Produtos}{13}{0}{2}
+\beamer@sectionintoc {3}{Membros finais}{15}{0}{3}
+\beamer@subsectionintoc {3}{1}{Exemplo: membros finais}{16}{0}{3}

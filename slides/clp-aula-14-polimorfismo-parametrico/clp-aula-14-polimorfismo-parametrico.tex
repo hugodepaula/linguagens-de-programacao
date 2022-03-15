@@ -1,0 +1,610 @@
+\documentclass[handout]{beamer}
+
+\input{aulas-beamer-preamble}
+
+
+\title[Programação Modular]
+{%
+    Polimorfismo paramétrico%
+}
+\author[Prof. Hugo de Paula]
+{
+    Prof.~Hugo~de~Paula
+}
+\institute[DCC / PUC Minas]
+{\epsfig{file=puclogo_small_bw,width=1.5cm} \\
+  \textsc{Pontifícia Universidade Católica de Minas Gerais}\\
+    Departamento de Ciência da Computação
+}
+\date[]{}
+
+\lstset{language=Java,
+   basicstyle=\scriptsize,
+   commentstyle=\color{red},
+   showstringspaces=false,
+   numbers=none,
+   numberstyle=\tiny}
+
+\begin{document}
+
+
+\selectlanguage{brazil}
+
+\begin{frame}
+   \titlepage
+\end{frame}
+
+
+\begin{frame}
+   \frametitle{Sumário}
+   \tableofcontents[pausesections]
+\end{frame}
+
+
+% duas linhas 1.46
+
+\addtobeamertemplate{frametitle}{}{%
+   \begin{textblock*}{10mm}(.9945\textwidth,-1.46cm)
+    \includegraphics[height=1cm]{puclogo_small_bw.pdf}
+   \end{textblock*}
+}
+
+\section{Polimorfismo universal paramétrico}
+
+\begin{frame}[fragile]{Polimorfismo universal paramétrico: \textit{Generics}}
+
+\begin{itemize}
+\item Exemplo de Coleções no \textit{Java Collections Framework v1.4}: \\[5mm]
+\end{itemize}
+
+\begin{lstlisting}
+ArrayList listaDeProfessores = new ArrayList();
+
+listaDeProfessores.add("Hugo de Paula"); 
+     // Adiciona um professor na lista
+listaDeProfessores.add("Zé da Silva");
+     // Adiciona um professor na lista
+
+String prof1 = (String) listaDeProfessores.get(0);      
+     // Recupera o 1o professor da lista
+
+Professor prof2 = (Professor) listaDeProfessores.get(1);
+     // Essa última linha irá compilar, uma vez que a função
+     // get(n) retorna Object, mas irá produzir erro de execução. 
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Polimorfismo paramétrico: Tipos como parâmetros}
+
+\begin{block}{Listas com tipos parametrizados}
+\lstinline|List<Tipo> variavel = new ArrayList<Tipo>();|
+\end{block}
+
+\begin{itemize}
+   \item A classe \lstinline|ArrayList| aceita um tipo como parâmetro:
+   \begin{itemize}
+       \item Tipo passado como parâmetro usando \texttt{<  >}.
+       \item Por compatibilidade: Versão antiga funciona, mas produz \textit{warnings}.
+   \end{itemize}
+\end{itemize}
+
+\begin{lstlisting}
+ArrayList<String> listaDeProfessores = new ArrayList();
+     // Define tipo da lista como parâmetro
+
+listaDeProfessores.add("Hugo de Paula"); 
+listaDeProfessores.add("Zé da Silva");
+
+String prof1 = listaDeProfessores.get(0);    
+     // Sem type casting
+Professor prof2 = (Professor) listaDeProfessores.get(1); 
+     // Produz erro de compilação (erro de tipo)
+\end{lstlisting}
+\end{frame}
+
+\section{Generics em Java}
+
+\subsection{Generics: Classes}
+
+\begin{frame}[fragile]{Generics: Classes}
+
+
+\begin{block}{Classes parametrizadas}
+\lstinline|public class Nome<Tipo> { }|
+
+ou
+
+\lstinline|public class Nome<Tipo1, Tipo2, ..., TipoN> { }|
+\end{block}
+
+\begin{itemize}
+   \item Um tipo deve ser passado como parâmetro para \lstinline|<Tipo>| no momento da construção do objeto.
+   \item o resto da sua classe pode ser implementada baseada nesse nome de tipo.
+      \begin{itemize}
+      \item Convenção de nomenclatura -- usar apenas um caractere: \\[3mm]
+      
+      T para Tipo, E para Elemento, N para Número, K  para Chave -- \textit{Key}, e V para Valor.
+      \end{itemize}
+\end{itemize}
+\end{frame}
+
+\subsection{Generics: variáveis e arranjos}
+
+\begin{frame}[fragile]{Generics: variáveis e arranjos}
+
+\begin{itemize}
+   \item Não é possível se construir objetos ou arranjos com tipos parametrizados.
+\end{itemize}
+
+\begin{lstlisting}
+public class Shulambs<T> {
+  private T campo;            // ok
+  private T[] arranjo;        // ok
+
+  public Shulambs(T param) {
+        campo = new T();      // erro
+        arranjo = new T[10];  // erro
+  }
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Generics: variáveis e arranjos}
+
+\begin{itemize}
+   \item Pode-se criar variáveis e passar parâmetros.
+   \item Pode-se fazer \textit{type casting} de arranjos a partir de \lstinline|Object[]|.
+\end{itemize}
+
+\begin{lstlisting}
+public class ShulambsFixed<T> {
+   private T campo;
+   private T[] arranjo;
+
+   @SuppressWarnings("unchecked")
+   public ShulambsFixed(T param) {
+      campo = param;
+      arranjo = (T[]) new Object[10];
+   }
+}
+\end{lstlisting}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Generics: comparação de objetos}
+
+\begin{itemize}
+   \item Generics usam semântica de referência.
+   \item Deve-se comparar objetos de tipos parametrizados usando o método \lstinline|T.equals(T)|.
+\end{itemize}
+
+\begin{lstlisting}
+public class ArrayList<E> {
+  ...
+  public int indexOf(E value) {
+    for (int i = 0; i < size; i++) {
+    // if (elementData[i] == value) {
+       if (elementData[i].equals(value)) {
+           return i;
+       }
+    }
+    return -1;
+  }
+}
+\end{lstlisting}
+\end{frame}
+
+
+\subsection{Generics: interfaces}
+
+
+\begin{frame}[fragile]{Generics: interfaces}
+
+\begin{lstlisting}
+// Representa uma lista de valores
+public interface List<E> {
+   public void add(E value);
+   public void add(int index, E value);
+   public E get(int index);
+   public int indexOf(E value);
+   public boolean isEmpty();
+   public void remove(int index);
+   public void set(int index, E value);
+   public int size();
+}
+
+public class ArrayList<E> implements List<E> { ... }
+
+public class LinkedList<E> implements List<E> { ... }
+\end{lstlisting}
+\end{frame}
+
+\section{Coleções}
+
+\subsection{Java Collections Framework} 
+
+\begin{frame}{\textit{Collections}}
+
+\begin{block}{\textit{Collections}}
+    Uma coleção é um objeto que agrupo múltiplos objetos, como um \textit{container}. 
+\end{block}
+
+\begin{block}{\textit{Java Collections Framework}}
+    É uma arquitetura unificada para representação e manipulação de coleções, independentes de implementação. 
+\end{block}
+
+
+\begin{center}
+    \includegraphics[width=.6\textwidth]{colls-coreInterfaces.png}\footnote{Oracle. \textit{Collections: The Java Tutorial}. 2016.}
+\end{center}
+\end{frame}
+
+\begin{frame}{\textit{Java Collections Framework}}
+
+\begin{center}
+\includegraphics[width=.7\textwidth]{implementations.png}
+\end{center}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Sintaxe}
+
+\begin{itemize}
+\item Exemplo de criação de coleção:
+
+\begin{block}{}
+\lstinline|List<String> list = new ArrayList<String>();|
+\end{block} 
+
+\item Processamento:
+\begin{itemize}
+\item for-each
+
+\begin{block}{}
+    \lstinline|for (Object o: list) System.out.println(o);|
+\end{block} 
+
+
+
+\item Iterador
+
+\begin{block}{}
+    \begin{lstlisting}
+    Iterator<?> it = list.iterator();
+    while(it.hasNext())
+    if (!cond(it.next())) 
+    it.remove();
+    \end{lstlisting}
+\end{block} 
+
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\section{Interfaces}
+
+\subsection{Collection}
+
+\begin{frame}[fragile]{Interface Collection<E>}
+
+\begin{itemize}
+\item Inclusão / remoção:
+\begin{lstlisting}
+boolean add(E elemento) 
+boolean remove(E elemento)
+\end{lstlisting}
+\item Consultas:
+\begin{lstlisting}
+int size()
+boolean isEmpty()
+boolean contains(Object elemento)
+Iterator<E> iterator()
+Object[] toArray()
+\end{lstlisting}
+\item Operações com grupos:
+\begin{lstlisting}
+boolean containsAll(Collection<?> coleção)
+boolean addAll(Collection<? extends E> coleção)
+void clear()
+void removeAll(Collection<?> coleção)
+void retainAll(Collection<?> coleção)
+\end{lstlisting}
+\end{itemize}
+\end{frame}
+
+\subsection{Set e SortedSet -- conjuntos}
+
+\begin{frame}[fragile]{Interface Set<E> -- conjuntos de elementos}
+
+\begin{itemize}
+\item Conjuntos: não aceitam elementos duplicados.
+\item Principais métodos:
+\begin{itemize}
+\item Herdados da interface \lstinline|Collection|.
+\end{itemize}
+\item Implementações:
+\begin{itemize}
+\item Classe \lstinline|HashSet| -- acesso mais rápido.
+\item Classe \lstinline|TreeSet| -- acesso ordenado.
+\item Classe \lstinline|LinkedHashSet| -- mais versátil.
+\end{itemize}
+\item Considerações:
+\begin{itemize}
+\item Dois conjuntos são iguais se contiverem os mesmos elementos (determinado através dos métodos \lstinline|equals()| e \lstinline|hashCode()|).
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Interface SortedSet<E> -- conjunto ordenado}
+
+\begin{itemize}
+\item Principais métodos:
+\begin{lstlisting}
+E first()
+E last()
+
+SortedSet<E> headSet(E aoElemento)
+SortedSet<E> subSet(E doElemento, E aoElemento)
+SortedSet<E> tailSet(E doElemento)
+
+Comparator<? super E> comparator()
+\end{lstlisting}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo de conjuntos}
+\begin{lstlisting}
+public class ExemploSet {
+    public static void main( String[] args ) {
+        
+        Set<String> conjunto = new HashSet<String>();
+        
+        conjunto.add( "Bernardo" );
+        conjunto.add( "Carolina" );
+        conjunto.add( "Felipe" );
+        conjunto.add( "Carolina" );
+        conjunto.add( "Ana" );
+        
+        System.out.println( conjunto );
+        
+        Set<String> conjuntoOrdenado = 
+        new TreeSet<String>( conjunto );
+        
+        System.out.println( conjuntoOrdenado );
+    }
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo de Problema: Bacteria}
+
+\begin{itemize}
+\item Cientistas criaram uma bactéria que come lixo. Ela pesa 10g e consome metade do seu peso a cada dia. O peso não se altera, ou seja, o lixo é todo metabolizado. 
+\item A cada dia, todas as bactérias existentes são clonadas. Cada nova bactéria dura apenas 5 dias e depois morre.
+\item Modele a classe \lstinline|Bacteria|. Deve haver métodos para:
+\begin{itemize}
+\item Retornar quanto lixo ela come (que é um valor fixo);
+\item Criar uma nova bactéria (clonando a atual);
+\item Simular a passagem de um dia. 
+\end{itemize}
+\item A seguir, implemente uma simulação: crie uma bactéria e simule a passagem de 10 dias, exibindo a quantidade de bactérias existentes e o total de lixo consumido. Utilize os métodos da classe \lstinline|Bacteria|.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Solução parcial: Bacteria}
+
+\begin{lstlisting}
+public class Bacteria implements Cloneable {
+    private double peso;
+    private int diasRestantes;
+    
+    public Bacteria() {
+        diasRestantes = 5;
+        peso = 10;
+    }
+    public void passaDia() {
+        diasRestantes--;
+    }
+    public boolean morreu() {
+        return (diasRestantes <= 0);
+    }
+    @Override
+    public Bacteria clone() throws CloneNotSupportedException {
+        return new Bacteria();
+    }
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Solução parcial: Bacteria}
+
+\begin{lstlisting}
+public static void main(String[] args) {
+    Collection<Bacteria> colonia = new HashSet<Bacteria>();
+    Collection<Bacteria> novas = new HashSet<Bacteria>();
+    colonia.add(new Bacteria());
+    for (int i = 0; i < 10; i++) {
+        for (Bacteria o : colonia) {
+            o.passaDia();
+            try {
+                novas.add((Bacteria) o.clone());
+            } catch (Exception e) {
+                System.out.println("Bactéria não clonável");
+            }
+        }
+        colonia.addAll(novas);
+        novas.clear();
+    }
+    System.out.println(colonia.size());
+}
+\end{lstlisting}
+\end{frame}
+
+\subsection{List -- listas}
+
+\begin{frame}[fragile]{Interface List<E> -- listas}
+\begin{itemize}
+\item Coleção indexada com possibilidade de chaves duplicadas
+\item Principais métodos:
+\end{itemize}
+\begin{lstlisting}
+void add( int índice, E elemento ) 
+boolean add( E elemento )
+boolean addAll( int índice, Collection<? extends E> coleção )
+
+E get( int índice )      
+E set( int índice, E element )
+int indexOf( Object elemento )
+int lastIndexOf( Object elemento )
+
+E remove( int índice )
+List<E> subList( int índiceInicial, int índiceFinal )
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Implementações de listas}
+
+\begin{itemize}
+\item \lstinline|Classe ArrayList<E>| -- semelhante a vetores dinâmicos.
+\begin{itemize}
+\item Implementa os métodos da interface.
+\end{itemize}
+\item \lstinline|Classe LinkedList<E>| -- manipulação sequencial de elementos (filas, pilhas, deques, etc.).
+\begin{itemize}
+\item Implementa métodos adicionais, além dos da interface:
+\end{itemize}
+\end{itemize}
+
+\begin{lstlisting}
+void addFirst( E elemento )
+void addLast( E elemento )
+E getFirst()
+E getLast()
+Object removeFirst()
+Object removeLast()
+\end{lstlisting}         
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo de listas}
+\begin{lstlisting}
+public class ExemploDeListas {
+    public static void main(String[] args) {
+        List<String> lista = new ArrayList<String>();
+        lista.add("Bernardo");      lista.add("Carolina");
+        lista.add("Felipe");        lista.add("Carolina");
+        lista.add("Clara");     
+        System.out.println(lista);
+        System.out.println("2: " + lista.get(2));
+        LinkedList<String> fila = new LinkedList<String>();
+        fila.addFirst("Bernardo");  fila.addFirst("Carolina");
+        fila.addFirst("Felipe");    fila.addFirst("Elizabeth");
+        fila.addFirst("Clara");
+        System.out.println(fila);
+        fila.removeLast();
+        fila.removeLast();
+        System.out.println(fila);
+    }
+}
+\end{lstlisting}
+\end{frame}
+
+\subsection{Queue -- filas}
+
+\subsection{Map -- mapeamentos}
+
+\begin{frame}[fragile]{Interface Map<K,V> -- mapeamentos}
+
+\begin{itemize}
+\item Associações de chaves (\textit{K -- Keys}) e valores (\textit{V -- Values}). \vspace{-.5mm}
+\item Principais métodos para alteração: \vspace{-.5mm}
+\begin{lstlisting}
+V put( K chave, V valor )
+V remove( K chave )
+void putAll( Map<? extends K, ? extends V> mapeamento )
+void clear()
+\end{lstlisting}
+\item Principais métodos para consulta:\vspace{-.5mm}
+\begin{lstlisting}
+V get( K chave )
+boolean containsKey( Object chave )
+boolean containsValue( Object valor )
+int size()
+boolean isEmpty()
+\end{lstlisting}
+\item Principais métodos para grupos:\vspace{-.5mm}
+\begin{lstlisting}
+Set<K> keySet()
+Collection<V> values()
+Set<Map.Entry<K,V>> entrySet()
+\end{lstlisting}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Map.Entry<K,V> -- elementos de mapeamentos}
+
+\begin{itemize}
+\item Representa um par chave-valor.
+\item Principais métodos:
+\begin{lstlisting}
+boolean equals( Object objeto )
+K getKey();
+V getValue(); 
+V setValue( V valor );
+\end{lstlisting}
+\item Implementações de mapeamentos:
+\begin{itemize}
+\item \lstinline|class HashMap<K,V>| -- agilidade, permite \texttt{nulls}.
+\item \lstinline|class TreeMap<K,V>| -- ordenação (árvore balanceada).
+\item \lstinline|class LinkedHashMap<K,V>| -- ordem de iteração previsível.
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{SortedMap<K,V> -- mapeamentos ordenados}
+
+\begin{itemize}
+\item  Implementado pelo \lstinline|TreeMap<K, V>|.
+\item Principais métodos:
+\begin{lstlisting}
+Comparator<? super K> comparator();
+SortedMap<K,V> headMap( K ateChave );
+SortedMap<K,V> subMap( K daChave, K ateChave );
+SortedMap<K,V> tailMap( K daChave );
+K firstKey();
+K lastKey();
+\end{lstlisting}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo de mapeamentos}
+
+\begin{lstlisting}
+public class ExemploMap {
+    public static void main(String[] args) {
+        Map<String, Integer> mapH = new HashMap<String, Integer>();
+        Integer UM = new Integer(1);
+        for (int i = 0, n = args.length; i < n; i++) {
+            String chave = args[i];
+            Integer frequencia = mapH.get(chave);
+            if (frequencia == null) {
+                frequencia = UM;
+            } else {
+                int valor = frequencia.intValue();
+                frequencia = new Integer(valor + 1);
+            }
+            mapH.put(chave, frequencia);
+        }
+        System.out.println(mapH);
+        Map<String, Integer> mapOrd = new TreeMap<String, Integer>(mapH);
+        System.out.println(mapOrd);
+    }
+}
+\end{lstlisting}
+\end{frame}
+
+
+
+\end{document}

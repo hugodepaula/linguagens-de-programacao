@@ -1,0 +1,19 @@
+\frametitle{Acesso a Variáveis}
+\begin{itemize}
+   \item Observe os códigos abaixo:
+      \begin{itemize}
+      \item \lstinline[language=Pascal]!read ( n );! \;  \lstinline[language=Pascal]!n :=  n + 1;! \;   \lstinline[language=Pascal]!write ( n );!
+      \end{itemize}
+   \item  \textbf{Quais os acessos a  } \textbf{n} \textbf{?}
+   \item  \textbf{O que significam?} \\[2mm]
+   \item Dois contextos possíveis
+      \begin{itemize}
+      \item uma referência para a variável
+      \item o conteúdo da variável (valor)
+      \end{itemize}
+   \item uma variável sempre produz uma referência  (identificado é associado a uma declaração)
+      \begin{itemize}
+      \item operação implícita substitui a referência pelo conteúdo  (``dereferenciação'')
+      \item \lstinline[language=Pascal]!read( n );! \;  \lstinline[language=Pascal]!n :=  valor(n) + 1;! \;   \lstinline[language=Pascal]!write ( valor(n) );!
+      \end{itemize}
+   \end{itemize}
