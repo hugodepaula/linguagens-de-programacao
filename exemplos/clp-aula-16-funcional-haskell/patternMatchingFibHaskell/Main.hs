@@ -16,6 +16,6 @@ fib2 n = fib2 (n-2) + fib2 (n-1)
 
 
 main = do
-  putStrLn "\n"
+  putStrLn "\nCasamento de padrões:\n"
   putStrLn (show (fib 3))
   putStrLn (show (fib2 3))
