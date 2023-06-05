@@ -318,8 +318,7 @@
 \begin{frame}[fragile]{Tipos de escopo}
 
    \bi 
-   \item Dado um identificador, a que ele est\'{a} associado?
-   \item Pode ser:
+   \item Dado um identificador, a que ele est\'{a} associado? Pode ser:
       \bi 
       \item  \emph{Binding} est\'{a}tico (escopo est\'{a}tico ou escopo l\'{e}xico)
       \item  \emph{Binding} din\^{a}mico (escopo din\^{a}mico)
@@ -328,7 +327,7 @@
 	
  \begin{block}{Exemplo em C}
  \tiny
-	\begin{lstlisting}[language=C,numbers=none]
+	\begin{lstlisting}[language=C,numbers=left]
 const int s = 2;
 int scale(int x) { 
    return x * s; // a qual declaracao s esta associado ?

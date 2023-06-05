@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.23 (MiKTeX 21.8 Portable) (preloaded format=pdflatex 2021.8.11)  23 FEB 2022 08:49
+This is pdfTeX, Version 3.141592653-2.6-1.40.23 (MiKTeX 21.8 Portable) (preloaded format=pdflatex 2021.8.11)  22 AUG 2022 09:58
 entering extended mode
 **./clp-aula-2-variaveis.tex
 (clp-aula-2-variaveis.tex
@@ -1295,17 +1295,17 @@ Overfull \vbox (5.01558pt too high) detected at line 315
 
  (clp-aula-2-variaveis.vrb
 LaTeX Font Info:    Trying to load font information for TS1+phv on input line 1
-7.
+6.
 
 (D:\Program Files\Miktex\texmfs\install\tex/latex/psnfss\ts1phv.fd
 File: ts1phv.fd 2020/03/25 scalable font definitions for TS1/phv.
 ))
 File: puclogo_small_bw.pdf Graphic file (type pdf)
 <use puclogo_small_bw.pdf>
-Package pdftex.def Info: puclogo_small_bw.pdf  used on input line 346.
+Package pdftex.def Info: puclogo_small_bw.pdf  used on input line 345.
 (pdftex.def)             Requested size: 28.45274pt x 27.08174pt.
 
-Overfull \vbox (23.77643pt too high) detected at line 346
+Overfull \vbox (10.17642pt too high) detected at line 345
  []
 
 [18
@@ -1313,14 +1313,14 @@ Overfull \vbox (23.77643pt too high) detected at line 346
 ]
 File: puclogo_small_bw.pdf Graphic file (type pdf)
 <use puclogo_small_bw.pdf>
-Package pdftex.def Info: puclogo_small_bw.pdf  used on input line 366.
+Package pdftex.def Info: puclogo_small_bw.pdf  used on input line 365.
 (pdftex.def)             Requested size: 28.45274pt x 27.08174pt.
  [19
 
 ]
 File: puclogo_small_bw.pdf Graphic file (type pdf)
 <use puclogo_small_bw.pdf>
-Package pdftex.def Info: puclogo_small_bw.pdf  used on input line 388.
+Package pdftex.def Info: puclogo_small_bw.pdf  used on input line 387.
 (pdftex.def)             Requested size: 28.45274pt x 27.08174pt.
  [20
 
@@ -1336,7 +1336,7 @@ Package pdftex.def Info: figuras/tempoDeVida.pdf  used on input line 5.
 )
 File: puclogo_small_bw.pdf Graphic file (type pdf)
 <use puclogo_small_bw.pdf>
-Package pdftex.def Info: puclogo_small_bw.pdf  used on input line 403.
+Package pdftex.def Info: puclogo_small_bw.pdf  used on input line 402.
 (pdftex.def)             Requested size: 28.45274pt x 27.08174pt.
  [21
 
@@ -1347,7 +1347,7 @@ Package pdftex.def Info: puclogo_small_bw.pdf  used on input line 403.
 (clp-aula-2-variaveis.vrb)
 File: puclogo_small_bw.pdf Graphic file (type pdf)
 <use puclogo_small_bw.pdf>
-Package pdftex.def Info: puclogo_small_bw.pdf  used on input line 428.
+Package pdftex.def Info: puclogo_small_bw.pdf  used on input line 427.
 (pdftex.def)             Requested size: 28.45274pt x 27.08174pt.
  [22
 
@@ -1357,14 +1357,14 @@ Package pdftex.def Info: puclogo_small_bw.pdf  used on input line 428.
  (clp-aula-2-variaveis.vrb)
 File: puclogo_small_bw.pdf Graphic file (type pdf)
 <use puclogo_small_bw.pdf>
-Package pdftex.def Info: puclogo_small_bw.pdf  used on input line 449.
+Package pdftex.def Info: puclogo_small_bw.pdf  used on input line 448.
 (pdftex.def)             Requested size: 28.45274pt x 27.08174pt.
  [23
 
 ]
 File: puclogo_small_bw.pdf Graphic file (type pdf)
 <use puclogo_small_bw.pdf>
-Package pdftex.def Info: puclogo_small_bw.pdf  used on input line 463.
+Package pdftex.def Info: puclogo_small_bw.pdf  used on input line 462.
 (pdftex.def)             Requested size: 28.45274pt x 27.08174pt.
  [24
 
@@ -1375,7 +1375,7 @@ Package pdftex.def Info: puclogo_small_bw.pdf  used on input line 463.
 (clp-aula-2-variaveis.vrb)
 File: puclogo_small_bw.pdf Graphic file (type pdf)
 <use puclogo_small_bw.pdf>
-Package pdftex.def Info: puclogo_small_bw.pdf  used on input line 489.
+Package pdftex.def Info: puclogo_small_bw.pdf  used on input line 488.
 (pdftex.def)             Requested size: 28.45274pt x 27.08174pt.
  [25
 
@@ -1385,14 +1385,14 @@ Package pdftex.def Info: puclogo_small_bw.pdf  used on input line 489.
  (clp-aula-2-variaveis.vrb)
 File: puclogo_small_bw.pdf Graphic file (type pdf)
 <use puclogo_small_bw.pdf>
-Package pdftex.def Info: puclogo_small_bw.pdf  used on input line 513.
+Package pdftex.def Info: puclogo_small_bw.pdf  used on input line 512.
 (pdftex.def)             Requested size: 28.45274pt x 27.08174pt.
  [26
 
 ]
 File: puclogo_small_bw.pdf Graphic file (type pdf)
 <use puclogo_small_bw.pdf>
-Package pdftex.def Info: puclogo_small_bw.pdf  used on input line 531.
+Package pdftex.def Info: puclogo_small_bw.pdf  used on input line 530.
 (pdftex.def)             Requested size: 28.45274pt x 27.08174pt.
  [27
 
@@ -1413,7 +1413,7 @@ Package rerunfilecheck Info: File `clp-aula-2-variaveis.out' has not changed.
  ) 
 Here is how much of TeX's memory you used:
  28138 strings out of 480736
- 545503 string characters out of 2898306
+ 545427 string characters out of 2898306
  1051091 words of memory out of 3000000
  45134 multiletter control sequences out of 15000+600000
  463544 words of font info for 82 fonts, out of 8000000 for 9000
@@ -1427,7 +1427,7 @@ gram Files/Miktex/texmfs/install/fonts/type1/urw/helvetic/uhvb8a.pfb><D:/Progra
 m Files/Miktex/texmfs/install/fonts/type1/urw/helvetic/uhvbo8a.pfb><D:/Program 
 Files/Miktex/texmfs/install/fonts/type1/urw/helvetic/uhvr8a.pfb><D:/Program Fil
 es/Miktex/texmfs/install/fonts/type1/urw/helvetic/uhvro8a.pfb>
-Output written on clp-aula-2-variaveis.pdf (27 pages, 312077 bytes).
+Output written on clp-aula-2-variaveis.pdf (27 pages, 312679 bytes).
 PDF statistics:
  662 PDF objects out of 1000 (max. 8388607)
  64 named destinations out of 1000 (max. 500000)
