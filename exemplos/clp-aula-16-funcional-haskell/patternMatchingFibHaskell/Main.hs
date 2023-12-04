@@ -1,6 +1,6 @@
 module Main where
 
--- Apenas uma definição da função fib com várias testagem de parâmetros
+-- Apenas uma definição da função fib com várias testagens de parâmetros
 fib :: Int -> Int
 fib n 
   | n == 1 = 1
@@ -9,7 +9,7 @@ fib n
   | otherwise = error "Fibonacci nao definido."
 
 
--- Função fibonacci com casamento de padrões (pattern matchin)
+-- Função fibonacci com casamento de padrões (pattern matching)
 -- Múltiplas definições da função fibP, cada definição com um padrão a ser casado no parâmetro de entrada.
 fibP :: Int -> Int
 fibP 1 = 1

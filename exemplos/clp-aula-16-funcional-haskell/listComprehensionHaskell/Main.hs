@@ -29,6 +29,19 @@ soma :: Num u => [u] -> u
 soma [] = 0
 soma (a:x) = a + soma x
 
+soma2 :: Num u => [u] -> u
+soma2 x = somaC x 0
+    where 
+       somaC [] r = r
+       somaC (a:x) r = somaC x (r+a)
+
+prod2 :: Num u => [u] -> u
+prod2 x = prodC x 1
+    where 
+       prodC [] r = r
+       prodC (a:x) r = prodC x (r*a)
+
+
 main = do
   putStrLn "\n\n-----------------------------------"
   putStr "pegar 2 [1, 2, 3, 4]:    "
@@ -74,3 +87,8 @@ main = do
   print (sum [1, 2, 3, 4])
   putStr "sum []:             "
   print (sum [])
+  putStrLn "\n-----------------------------------"
+  putStr "somaC [1, 2, 3, 4]:  "
+  print (soma2 [1, 2, 3, 4])
+  putStr "prodC [1, 2, 3, 4]:  "
+  print (prod2 [1, 2, 3, 4])

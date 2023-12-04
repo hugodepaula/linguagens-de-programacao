@@ -10,6 +10,8 @@ mapear :: (t -> u) -> [t] -> [u]
 mapear f []    = []
 mapear f (a:x) = f a : mapear f x
 
+somatorio :: Num t => [t] -> t
+somatorio x = sum x
 
 main = do
   putStrLn "\n\n-----------------------------------"
@@ -21,4 +23,18 @@ main = do
   putStrLn "\n-----------------------------------"
   print ([quad x | x <- [1 .. 4]])
   print ([impar x | x <- [1 .. 4]])
+  putStrLn "\n-----------------------------------"
+  print (sum [1 .. 4])
+  print (somatorio [1 .. 4])
+  putStrLn "\n\n-----------------------------------"
+  print (mapear somatorio [[1 .. 4], [2 .. 5], [3 .. 6], [4 .. 7]])
+
+
+
+
+
+
+
+
+ 
  
