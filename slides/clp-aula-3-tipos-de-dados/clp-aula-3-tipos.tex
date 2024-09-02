@@ -294,6 +294,44 @@ Descritor de strings dinâmicas de comprimento limitado em tempo de execução. 
 
 \end{frame}
 
+\begin{frame}[fragile]{Tipo ponteiro}
+    \begin{itemize}
+        \item Um tipo ponteiro possui uma faixa de valores que corresponde a endereços de memória, e um valor especial \textit{nil} (normalmente representado pelo zero).
+        \item Provê endereçamento indireto.
+        \item Usado para gerenciamento dinâmico de memória.
+        \item Região de memória em que o armazenamento é criado dinamicamente é chamado de \textit{heap}.
+        \item Tipo do ponteiro indica forma de codificação da região apontada.
+        \item Em C: ponteiro \lstinline|void| pode apontar para região de qualquer tipo.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Tipo ponteiro}
+    \begin{itemize}
+        \item Operações fundamentais: atribuição e dereferenciação.
+        \begin{itemize}
+            \item Atribuição: direciona o ponteiro para um endereço de memória.
+            \item Dereferenciação: retorna o valor armazenado no local apontado pelo valor do ponteiro.
+        \end{itemize}
+        \begin{center}
+            \item Ex. em C:
+
+            \begin{tabular}{lll}
+                \hline
+                \textbf{Declaração} & \textbf{Semântica} & \textbf{Semântica} \\
+                & \textbf{de valor} & \textbf{de referência} \\ \hline
+                \lstinline|int i| & \lstinline|i| & \lstinline|&i| \\
+                \lstinline|int *ptr| & \lstinline|*ptr| & \lstinline|ptr| \\
+                \lstinline|int fun()| & \lstinline|fun()| & \lstinline|fun| \\
+                \hline
+            \end{tabular}
+        \end{center}
+
+    \end{itemize}
+
+
+\end{frame}
+
+
 
 \subsection{Tipos compostos}
 
@@ -309,43 +347,6 @@ Descritor de strings dinâmicas de comprimento limitado em tempo de execução. 
       \item Produto Cartesiano, União Disjunta, Mapeamento, Conjunto Potência
       \end{itemize}
 	\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Tipo ponteiro}
-\begin{itemize}
-    \item Um tipo ponteiro possui uma faixa de valores que corresponde a endereços de memória, e um valor especial \textit{nil} (normalmente representado pelo zero).
-    \item Provê endereçamento indireto.
-    \item Usado para gerenciamento dinâmico de memória.
-    \item Região de memória em que o armazenamento é criado dinamicamente é chamado de \textit{heap}.
-    \item Tipo do ponteiro indica forma de codificação da região apontada.
-    \item Em C: ponteiro \lstinline|void| pode apontar para região de qualquer tipo.
-\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Tipo ponteiro}
-\begin{itemize}
-    \item Operações fundamentais: atribuição e dereferenciação.
-    \begin{itemize}
-        \item Atribuição: direciona o ponteiro para um endereço de memória.
-        \item Dereferenciação: retorna o valor armazenado no local apontado pelo valor do ponteiro.
-    \end{itemize}
-\begin{center}
-    \item Ex. em C:
-
-\begin{tabular}{lll}
-    \hline
-    \textbf{Declaração} & \textbf{Semântica} & \textbf{Semântica} \\
-     & \textbf{de valor} & \textbf{de referência} \\ \hline
-     \lstinline|int i| & \lstinline|i| & \lstinline|&i| \\
-     \lstinline|int *ptr| & \lstinline|*ptr| & \lstinline|ptr| \\
-     \lstinline|int fun()| & \lstinline|fun()| & \lstinline|fun| \\
-     \hline
-\end{tabular}
-\end{center}
-
-\end{itemize}
-
-
 \end{frame}
 
 
@@ -738,9 +739,8 @@ done
 vetor = [2, 4, 6, 8, 10, 12, 14, 16]
 matriz = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
 
-vetor(3:6) % é um arranjo de 3 elementos.
-mattriz[0][0:2] % 2 primeiros elementos da 1a linha da matriz.
-
+print(vetor[3:6])  # é um arranjo de 3 elementos.
+print(matriz[0][0:2]) # 2 primeiros elementos da 1a linha da matriz.
 \end{lstlisting}
 \end{frame}
 
